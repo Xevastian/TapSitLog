@@ -1,11 +1,12 @@
-
+import { useState,useEffect, React } from 'react';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-     
-    </div>
+
+    <>
+    <button onClick={subNum}>Get Started</button>
+    </>
   );
 }
 
