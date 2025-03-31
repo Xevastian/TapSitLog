@@ -14,15 +14,10 @@ const menuShcema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    Order_Count:{
+    Stocks:{
         type:Number,
         default: 0,
     },
-    Status:{
-        type:String,
-        enum:['available','out of stock'],
-        default:'out of stock'
-    }
 });
 
 const Menu = mongoose.model('menus',menuShcema);

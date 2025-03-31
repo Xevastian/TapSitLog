@@ -1,15 +1,15 @@
 import { React } from 'react';
 import {Route,Routes} from 'react-router-dom';
 import './App.css';
-import MenuPage from './pages/adminPages/menuPage';
-import LandingPage from './pages/adminPages/landingPage';
-import GenerateQrPage from './pages/adminPages/menuPages/generateQrPage';
-import SaleSummaryPage from './pages/adminPages/menuPages/saleSummaryPage';
-import CounterPage from './pages/adminPages/menuPages/counterPage';
-import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage';
-import OrderPage from './pages/userPages/orderPage';
-import CartPage from './pages/userPages/cartPage';
-import PayementPage from './pages/userPages/payementPage';
+import MenuPage from './pages/adminPages/menuPage.js';
+import LandingPage from './pages/adminPages/landingPage.js';
+import GenerateQrPage from './pages/adminPages/menuPages/generateQrPage.js';
+import SaleSummaryPage from './pages/adminPages/menuPages/saleSummaryPage.js';
+import CounterPage from './pages/adminPages/menuPages/counterPage.js';
+import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
+import OrderPage from './pages/userPages/orderPage.js';
+import CartPage from './pages/userPages/cartPage.js';
+import PayementPage from './pages/userPages/payementPage.js';
 
 function App() {
   return <Routes>
