@@ -15,7 +15,7 @@ router.post("/addMenu", async (req, res) => {
     }
 });
 
-router.put("/updateMenuStocks/:FoodID", async (req, res) => {
+router.put("/updateMenuStocks/:FoodID/", async (req, res) => {
     const { FoodID } = req.params;
     const { Stocks } = req.body;
     try {
@@ -39,6 +39,33 @@ router.get("/getMenu", async (req, res) => {
         res.status(200).json(menuItems);
     } catch (error) {
         res.status(500).json({ message: "Error fetching menu items", error });
+    }
+});
+
+router.get("/getMenu/:FoodID", async (req, res) => {
+    const { FoodID } = req.params;
+    try {
+        const menuItem = await Menu.findById(FoodID);
+        if (!menuItem) {
+            return res.status(404).json({ message: "Menu item not found" });
+        }
+        res.status(200).json(menuItem);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching menu item", error });
+    }
+}
+);  
+
+router.delete("/deleteMenu/:FoodID", async (req, res) => {
+    const { FoodID } = req.params;
+    try {
+        const deletedMenu = await Menu.findByIdAndDelete(FoodID);
+        if (!deletedMenu) {
+            return res.status(404).json({ message: "Menu item not found" });
+        }
+        res.status(200).json({ message: "Menu item deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting menu item", error });
     }
 });
 

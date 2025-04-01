@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import Menu from './menuModel'
 
 const orderModel = new mongoose.Schema({
     OrderID:{

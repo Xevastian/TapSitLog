@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Order from './orderModel'
 
 const tableModel = new mongoose.Schema({
     TableID:{
@@ -11,13 +10,10 @@ const tableModel = new mongoose.Schema({
         type:Number,
         required:true
     },
-    QR_Code:{
-        type:String,
-        required:true
-    },
     Orders:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'orders',
+        default: []
     }]
 })
 

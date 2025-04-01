@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import menuRoutes from "./routes/menu.routes.js"; 
+import orderRoutes from "./routes/order.routes.js";
+import tableRoutes from "./routes/table.routes.js";
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 app.use("/menu", menuRoutes);
+app.use("/order", orderRoutes); 
+app.use("/table", tableRoutes);
 
 app.get("/", (req, res) => {
   res.send("MongoDB is connected and server is running!");
