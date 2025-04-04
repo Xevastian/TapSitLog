@@ -4,7 +4,8 @@ import axios from 'axios';
 
 export default function GenerateQrPage() {   
     const [url, setUrl] = useState('');
-    const ipv4 = "192.168.18.11" // enter ipv4 of lan network connection
+    //"tanauan 192.168.68.117 :: dorm 192.168.18.11"
+    const ipv4 = "192.168.68.117" // enter ipv4 of lan network connection
     const getURL = async () => {
         const tableNumber = document.getElementById('Table-Input').value;
         if (tableNumber === '') {
@@ -17,7 +18,7 @@ export default function GenerateQrPage() {
                 Table_Number : tableNumber
             });
             if (response.status === 201) {
-                const tableID = response.data.TableID;
+                const tableID = response.data._id;
                 setUrl( `http://${ipv4}:3000/${tableID}/order`);
             }
         } catch(e){

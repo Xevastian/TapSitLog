@@ -8,7 +8,8 @@ const tableModel = new mongoose.Schema({
     Orders:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'orders',
-        default: []
+        default: [],
+        required: false,
     }]
 })
 

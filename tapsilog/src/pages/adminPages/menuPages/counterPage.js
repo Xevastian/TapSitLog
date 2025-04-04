@@ -38,8 +38,6 @@ export default function CounterPage() {
 
     const submitOrder = async () => {
         if (customer === -1 || customer === "") {
-            // Open the customer number dialog if not already open
-            setCustomerNumberDialog(true);
             return;
         }
 

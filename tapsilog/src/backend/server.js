@@ -28,5 +28,4 @@ app.get("/", (req, res) => {
   res.send("MongoDB is connected and server is running!");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(5000,"0.0.0.0", () => console.log(`Server running on port 0.0.0.0:5000`));

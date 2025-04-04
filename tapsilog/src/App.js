@@ -10,14 +10,16 @@ import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
 import OrderPage from './pages/userPages/orderPage.js';
 import CartPage from './pages/userPages/cartPage.js';
 import PayementPage from './pages/userPages/payementPage.js';
+import OTCPayementPage from './pages/userPages/paymentPages/OTCPayementPage.js';
+import OnlinePaymentPage from './pages/userPages/paymentPages/onlinePaymentPage.js';
 
 function App() {
   return <Routes>
     <Route path='/:id/order' element={<OrderPage/>}/>
-    <Route path='/:id/cart' element={<CartPage/>}/>
-    <Route path='/:id/cart/:cartID/payment' element={<PayementPage/>}/>
-    <Route path='/:id/cart/:cartID/payment/online' element={<PayementPage/>}/>
-    <Route path='/:id/cart/:cartID/payment/otc' element={<PayementPage/>}/>
+    <Route path='/:id/order' element={<CartPage/>}/>
+    <Route path='/:id/order/:orderID/payment' element={<PayementPage/>}/>
+    <Route path='/:id/order/:orderID/payment/online' element={<OnlinePaymentPage/>}/>
+    <Route path='/:id/order/:orderID/payment/otc' element={<OTCPayementPage/>}/>
     <Route path='/menu' element={<MenuPage />}/>
     <Route path='/menu/setup' element={<SetupOrdersPage />}/>
     <Route path='/menu/counter' element={<CounterPage />}/>
