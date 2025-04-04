@@ -1,40 +1,51 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const orderModel = new mongoose.Schema({
-    OrderID:{
-        type: mongoose.Schema.Types.ObjectId,
-        unique: true,
-        auto: true
-    },
-    Content:{
-        type: Map,
-        of:{
-            type: Number,
-            default: 0,
+    Content: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'menus', 
+                required: true,
+            },
+            Food_Name: {
+                type: String,
+                required: true,
+            },
+            Food_Price: {
+                type: Number,
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                default: 1,
+            },
         },
-        default: {},
-        keyType: mongoose.Schema.Types.ObjectId,
-        ref: 'menus'
-    },
-    Total:{
+    ],
+    Total: {
         type: Number,
         default: 0,
     },
-    Status:{
+    Status: {
         type: String,
-        enum:['paid','served','unpaid'],
-        default:'unpaid'
+        default: 'unpaid',
     },
-    OrderedAt:{
+    OrderedAt: {
         type: Date,
         default: Date.now,
     },
-    TableID:{
+    TableID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'tables'
+        ref: 'tables',
+        required: false,
     },
-})
+    CustomerNumber: {
+        type: Number,
+        required: false,
+    },
+});
 
-const Order = mongoose.model('orders',orderModel)
+const Order = mongoose.model('orders', orderModel);
 
 export default Order;

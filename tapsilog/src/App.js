@@ -4,7 +4,7 @@ import './App.css';
 import MenuPage from './pages/adminPages/menuPage.js';
 import LandingPage from './pages/adminPages/landingPage.js';
 import GenerateQrPage from './pages/adminPages/menuPages/generateQrPage.js';
-import SaleSummaryPage from './pages/adminPages/menuPages/saleSummaryPage.js';
+import SaleSummaryPage from './pages/adminPages/menuPages/PendingOrderPage.js';
 import CounterPage from './pages/adminPages/menuPages/counterPage.js';
 import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
 import OrderPage from './pages/userPages/orderPage.js';
@@ -21,7 +21,7 @@ function App() {
     <Route path='/menu' element={<MenuPage />}/>
     <Route path='/menu/setup' element={<SetupOrdersPage />}/>
     <Route path='/menu/counter' element={<CounterPage />}/>
-    <Route path='/menu/summary' element={<SaleSummaryPage />}/>
+    <Route path='/menu/pending-orders' element={<SaleSummaryPage />}/>
     <Route path='/menu/generate-qr' element={<GenerateQrPage />}/>
     <Route path="/" element={<LandingPage />}/>
   </Routes>

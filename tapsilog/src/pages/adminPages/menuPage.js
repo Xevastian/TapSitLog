@@ -21,8 +21,8 @@ export default function MenuPage() {
                 Counter
             </button>
 
-            <button onClick={() => nav('summary')}>
-                Sale Summary
+            <button onClick={() => nav('pending-orders')}>
+                Pending Orders
             </button>
 
             <button onClick={() => nav('generate-qr')}>

@@ -15,24 +15,6 @@ router.post("/addMenu", async (req, res) => {
     }
 });
 
-router.put("/updateMenuStocks/:FoodID/", async (req, res) => {
-    const { FoodID } = req.params;
-    const { Stocks } = req.body;
-    try {
-        const updatedMenu = await Menu.findByIdAndUpdate(
-            FoodID,
-            { Stocks },
-            { new: true }
-        );
-        if (!updatedMenu) {
-            return res.status(404).json({ message: "Menu item not found" });
-        }
-        res.status(200).json(updatedMenu);
-    } catch (error) {
-        res.status(500).json({ message: "Error updating menu stocks", error });
-    }
-});
-
 router.get("/getMenu", async (req, res) => {
     try {
         const menuItems = await Menu.find();
@@ -42,10 +24,10 @@ router.get("/getMenu", async (req, res) => {
     }
 });
 
-router.get("/getMenu/:FoodID", async (req, res) => {
-    const { FoodID } = req.params;
+router.get("/getMenu/:_id", async (req, res) => {
+    const { _id } = req.params;
     try {
-        const menuItem = await Menu.findById(FoodID);
+        const menuItem = await Menu.findById(_id);
         if (!menuItem) {
             return res.status(404).json({ message: "Menu item not found" });
         }
@@ -56,10 +38,10 @@ router.get("/getMenu/:FoodID", async (req, res) => {
 }
 );  
 
-router.delete("/deleteMenu/:FoodID", async (req, res) => {
-    const { FoodID } = req.params;
+router.delete("/deleteMenu/:_id", async (req, res) => {
+    const { _id } = req.params;
     try {
-        const deletedMenu = await Menu.findByIdAndDelete(FoodID);
+        const deletedMenu = await Menu.findByIdAndDelete(_id);
         if (!deletedMenu) {
             return res.status(404).json({ message: "Menu item not found" });
         }

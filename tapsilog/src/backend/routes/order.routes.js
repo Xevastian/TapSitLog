@@ -4,9 +4,12 @@ import Order from "../models/orderModel.js";
 const router = express.Router();
 
 router.post("/addOrder", async(req, res) => {
-    const {Content, Total,TableID} = req.body;
+    const {Content, Total,TableID, Status,CustomerNumber} = req.body;
+    if(!Status) {
+        req.body.Status = 'unpaid';
+    }
     try {
-        const newOrder = new Order({Content, Total, TableID});
+        const newOrder = new Order({Content, Total, TableID, Status, CustomerNumber});
         await newOrder.save();
         res.status(201).json(newOrder);
         console.log("New order created:", newOrder);
