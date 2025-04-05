@@ -15,7 +15,7 @@ import OnlinePaymentPage from './pages/userPages/paymentPages/onlinePaymentPage.
 import Gcash from './pages/userPages/paymentPages/onlineOptionsPage/gcash.js';
 import Paymaya from './pages/userPages/paymentPages/onlineOptionsPage/paymaya.js';
 import Bank from './pages/userPages/paymentPages/onlineOptionsPage/onlineBank.js';
-import ReadQRPage from './pages/adminPages/menuPages/readQRPage.js';
+import BarcodeScanner from './pages/adminPages/menuPages/readQRPage.js';
 
 function App() {
   return <Routes>
@@ -30,7 +30,7 @@ function App() {
     <Route path='/menu' element={<MenuPage />}/>
     <Route path='/menu/setup' element={<SetupOrdersPage />}/>
     <Route path='/menu/counter' element={<CounterPage />}/>
-    <Route path='/menu/counter/read-qr' element={<ReadQRPage />}/>
+    <Route path='/menu/counter/read-qr' element={<BarcodeScanner />}/>
     <Route path='/menu/pending-orders' element={<SaleSummaryPage />}/>
     <Route path='/menu/generate-qr' element={<GenerateQrPage />}/>
     <Route path="/" element={<LandingPage />}/>

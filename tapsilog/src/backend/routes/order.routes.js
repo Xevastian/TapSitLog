@@ -27,16 +27,13 @@ router.get("/getOrder", async (req, res) => {
     }
 });
 
-router.get("/getOrder/:OrderID", async (req, res) => {
-    const { OrderID } = req.params;
-    try {
-        const order = await Order.findById(OrderID).populate('TableID');
-        if (!order) {
-            return res.status(404).json({ message: "Order not found" });
-        }
-        res.status(200).json(order);
+router.get("/getCurOrder/:_id", async (req, res) => {
+    const { _id } = req.params;
+    try{
+        const orders = await Order.findById(_id);
+        res.status(200).json(orders);
     } catch (error) {
-        res.status(404).json({ message: "Error fetching order", error });
+        res.status(404).json({ message: "Error fetching orders", error });
     }
 });
 
