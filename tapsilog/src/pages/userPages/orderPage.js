@@ -9,7 +9,6 @@ export default function OrderPage() {
     const navigate = useNavigate();
     const [menus, setMenu] = useState([]);
     const [order, setOrder] = useState([]);
-    console.log(id);
 
     const addOrder = (foodID) => {
         const food = menus.find(item => item._id === foodID);

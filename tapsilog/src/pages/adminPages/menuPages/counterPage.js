@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function CounterPage() {
     const [menus, setMenu] = useState([]);
     const [order, setOrder] = useState([]);
     const [customer, setCustomer] = useState(-1);
     const [customerNumberDialog, setCustomerNumberDialog] = useState(false);
+
+    const navigate = useNavigate();
+
+    const nav = () => {
+        navigate(`/menu/counter/read-qr`);
+    }
 
     const addOrder = (foodID) => {
         const food = menus.find(item => item._id === foodID);
@@ -81,6 +88,7 @@ export default function CounterPage() {
     return (
         <div>
             <h1>Counter Page</h1>
+            <button onClick={() => nav()}> Read QR </button>
             {menus.map((menu) => (
                 <div key={menu._id}>
                     <h2>{menu.Food_Name}</h2>

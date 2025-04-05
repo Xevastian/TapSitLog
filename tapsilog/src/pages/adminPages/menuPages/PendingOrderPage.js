@@ -6,6 +6,12 @@ export default function PendingOrderPage() {
 
     useEffect(() => {
         fetchOrders();
+        const interval = setInterval(() => {
+            fetchOrders();
+        }, 5000);
+
+        // Clear the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
 
     const fetchOrders = async () => {
@@ -24,14 +30,14 @@ export default function PendingOrderPage() {
                 Status: "served",
             });
             if (response.status === 200) {
-                fetchOrders();
+                fetchOrders(); // Refresh orders after updating status
             }
         } catch (e) {
             console.error("Error updating order status:", e);
             alert("Failed to update order status.");
         }
-    }
-    console.log("Pending orders: ",pendingOrders);
+    };
+
     return (
         <div>
             <h1>Pending Order Page</h1>
@@ -41,19 +47,29 @@ export default function PendingOrderPage() {
                 <ul>
                     {pendingOrders.map((order) => (
                         <li key={order._id}>
-                            <h3>Order ID: {order._id}<br/> {order.CustomerNumber ? `Customer Number: ${order.CustomerNumber}` : ""}
-                            {order.TableID ? `Table Number: ${order.TableID}` : ""}</h3>
-                            
+                            <h3>
+                                Order ID: {order._id}
+                                <br />
+                                {order.CustomerNumber ? `Customer Number: ${order.CustomerNumber}` : ""}
+                                {order.TableID ? 
+                                <div>
+                                    <h4>
+                                    {`Table ID: ${order.TableID._id}`}
+                                    </h4>
+                                    <h4>
+                                    {`Table Number: ${order.TableID.Table_Number}`}
+                                    </h4>
+                                </div> : ""}
+                            </h3>
                             <ul>
                                 {order.Content.map((item, index) => (
                                     <li key={index}>
                                         {item.Food_Name} - Quantity: {item.quantity}
-                                        {console.log(item)}
                                     </li>
                                 ))}
                             </ul>
                             <p>Total: {order.Total}</p>
-                            <button onClick={() => updateStatus(order._id)}> Served </button>
+                            <button onClick={() => updateStatus(order._id)}>Served</button>
                         </li>
                     ))}
                 </ul>
