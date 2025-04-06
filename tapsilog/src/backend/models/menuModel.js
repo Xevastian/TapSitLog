@@ -9,6 +9,10 @@ const menuShcema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    Food_Category:{
+        type:String,
+        required:true
+    },
 });
 
 const Menu = mongoose.model('menus',menuShcema);

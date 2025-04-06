@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 export default function SetupOrdersPage() {
     const [menu, setMenu] = useState([]);
     const [foodName, setFoodName] = useState("");
+    const [foodCategory, setFoodCategory] = useState("");
     const [foodPrice, setFoodPrice] = useState("");
 
     useEffect(() => {
@@ -34,8 +35,8 @@ export default function SetupOrdersPage() {
     };
 
     const addMenu = async () => {
-        if (!foodName.trim() || !foodPrice.trim()) {
-            alert("Please fill in both fields.");
+        if (!foodName.trim() || !foodPrice.trim() || !foodCategory.trim()) {
+            alert("Please fill in all fields.");
             return;
         }
 
@@ -43,6 +44,7 @@ export default function SetupOrdersPage() {
             const response = await axios.post("http://localhost:5000/menu/addMenu", {
                 Food_Name: foodName,
                 Food_Price: parseFloat(foodPrice),
+                Food_Category: foodCategory,
             });
 
             if (response.status === 201) {
@@ -50,6 +52,7 @@ export default function SetupOrdersPage() {
                 setMenu([...menu, response.data]); 
                 setFoodName("");
                 setFoodPrice("");
+                setFoodCategory("");
                 fetchMenu();
             }
         } catch (e) {
@@ -80,11 +83,38 @@ export default function SetupOrdersPage() {
                     value={foodPrice} 
                     onChange={(e) => setFoodPrice(e.target.value)} 
                     required 
-                />
+                /><br />
+
+                <label>Food Category:</label><br />
+                <div>
+                    <button 
+                        type="button" 
+                        onClick={() => setFoodCategory("Rice Meal")}
+                        style={{ backgroundColor: foodCategory === "Rice Meal" ? "lightblue" : "white" }}
+                    >
+                        Rice Meal
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => setFoodCategory("Drinks")}
+                        style={{ backgroundColor: foodCategory === "Drinks" ? "lightblue" : "white" }}
+                    >
+                        Drinks
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => setFoodCategory("Snacks")}
+                        style={{ backgroundColor: foodCategory === "Snacks" ? "lightblue" : "white" }}
+                    >
+                        Snacks
+                    </button>
+                </div>
+                <br />
+
                 <button 
                     type="button" 
                     onClick={addMenu}
-                    disabled={!foodName.trim() || !foodPrice.trim()}
+                    disabled={!foodName.trim() || !foodPrice.trim() || !foodCategory.trim()}
                 >
                     Submit
                 </button>
@@ -97,6 +127,7 @@ export default function SetupOrdersPage() {
                     <tr>
                         <th>Food Name</th>
                         <th>Price</th>
+                        <th>Category</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
@@ -106,6 +137,7 @@ export default function SetupOrdersPage() {
                             <tr key={item._id}>
                                 <td>{item.Food_Name}</td>
                                 <td>${item.Food_Price.toFixed(2)}</td>
+                                <td>{item.Food_Category}</td>
                                 <td>
                                     <button onClick={() => deleteMenu(item._id)}>Delete</button>
                                 </td>
@@ -113,7 +145,7 @@ export default function SetupOrdersPage() {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="3">No menu items available.</td>
+                            <td colSpan="4">No menu items available.</td>
                         </tr>
                     )}
                 </tbody>

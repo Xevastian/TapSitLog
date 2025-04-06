@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function PayMaya() {
     const { orderID } = useParams();
-    const ipv4 = "192.168.68.117";
+    const ipv4 = "192.168.68.142";
     console.log("OrderID: ",orderID);
     const handlePayment = async () => {
         try {

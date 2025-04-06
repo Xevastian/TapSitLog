@@ -20,7 +20,7 @@ import BarcodeScanner from './pages/adminPages/menuPages/readQRPage.js';
 function App() {
   return <Routes>
     <Route path='/:id/order' element={<OrderPage/>}/>
-    <Route path='/:id/order' element={<CartPage/>}/>
+    <Route path='/:id/order/:orderID' element={<CartPage/>}/>
     <Route path='/:id/order/:orderID/payment' element={<PayementPage/>}/>
     <Route path='/:id/order/:orderID/payment/online' element={<OnlinePaymentPage/>}/>
     <Route path='/:id/order/:orderID/payment/online/gcash' element={<Gcash/>}/>

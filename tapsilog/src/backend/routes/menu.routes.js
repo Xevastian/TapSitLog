@@ -4,9 +4,9 @@ import Menu from "../models/menuModel.js";
 const router = express.Router();
 
 router.post("/addMenu", async (req, res) => {
-    const { Food_Name, Food_Price } = req.body;
+    const { Food_Name, Food_Price, Food_Category } = req.body;
     try {
-        const newMenu = new Menu({ Food_Name, Food_Price });
+        const newMenu = new Menu({ Food_Name, Food_Price, Food_Category });
         await newMenu.save();
         res.status(201).json(newMenu);
         console.log("New menu item created:", newMenu);

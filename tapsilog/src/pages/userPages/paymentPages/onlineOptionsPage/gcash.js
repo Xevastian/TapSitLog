@@ -4,7 +4,7 @@ import axios from "axios";
 export default function GCash() {
     const { orderID } = useParams();
     console.log("OrderID: ",orderID);
-    const ipv4 = "192.168.68.117" 
+    const ipv4 = "192.168.68.142" 
     const handlePayment = async () => {
         try {
             const response = await axios.put(`http://${ipv4}:5000/order/updateOrder/${orderID}`, {
