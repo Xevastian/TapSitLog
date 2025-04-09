@@ -1,0 +1,49 @@
+@import 'vars.css';
+
+.menuHeader{
+    background-color: var(--tertiary-4);
+    margin: 0;
+    padding: 10px 12px;
+}
+
+.menuHeader h1{
+    margin: 0;
+    color: var(--primary-white);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-semibold);
+}
+
+.menu-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 40px;
+}
+
+.menu-option{
+    background-color: var(--tertiary-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    width: 20vh;
+    height: 40vh;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.menu-option h3{
+    text-align: center;
+    color: var(--primary-white);
+    font-family: var(--font-family);
+    font-size:clamp(20px, 24px, 32px); ;
+    font-weight: var(--font-weight-semibold);
+}
+
+.menu-option-icon{
+    height: clamp(80px, 100px, 120px);
+    width: clamp(80px, 100px, 120px);
+    color: var(--primary-white);
+}

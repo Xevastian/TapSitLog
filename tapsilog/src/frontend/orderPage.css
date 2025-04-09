@@ -1,12 +1,13 @@
 @import 'vars.css';
 
 .orderPage {
-    padding: 20px;
+    
     background-color: var(--primary-white);
     min-height: 100vh;
     font-family: var(--font-family);
     display: flex;
     flex-direction: column;
+    
 }
 
 
@@ -23,7 +24,7 @@
     top: 0; 
     z-index: 10; 
     background-color: var(--primary-white); 
-    padding: 10px 0; 
+    padding: 10px 20px; 
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -98,6 +99,7 @@
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
     font-family: var(--font-family); 
+    border: none;
 }
 
 .cart:hover {
@@ -223,4 +225,40 @@
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
+}
+
+
+.menu-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.menu-item-minus {
+    background-color: var(--primary-white);
+    color: var(--tertiary-4);
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item-minus:hover {
+    background-color: var(--tertiary-3);
+    color: var(--primary-white);
+}
+
+.menu-item-quantity {
+    font-size: 18px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-black);
+    margin: 0 10px;
 }

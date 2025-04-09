@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import '../../../frontend/setupOrdersPage.css'
 
 export default function SetupOrdersPage() {
     const [menu, setMenu] = useState([]);
@@ -57,14 +58,15 @@ export default function SetupOrdersPage() {
             }
         } catch (e) {
             console.error("Error adding menu item:", e);
-            alert("Failed to add menu item. Please try again.");
         }
     };
 
     return (
-        <div>
-            <h1>Setup Orders Page</h1>
-            <form onSubmit={(e) => e.preventDefault()}>
+        <div style={{width:"100%" }}>
+            <header className="setup-nav">
+                <h1>Setup Orders Page</h1>
+            </header>
+            <form onSubmit={(e) => e.preventDefault()} className="setup-form">
                 <label htmlFor="FoodName">Food Name:</label><br />
                 <input 
                     type="text" 
@@ -121,6 +123,7 @@ export default function SetupOrdersPage() {
             </form>
 
             <br /><br /><br />
+            <div className="setup-table">
             <h2>Menu Items</h2>
             <table border="1">
                 <thead>
@@ -150,6 +153,7 @@ export default function SetupOrdersPage() {
                     )}
                 </tbody>
             </table>
+            </div>
         </div>
     );
 }

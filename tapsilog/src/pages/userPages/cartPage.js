@@ -4,9 +4,9 @@ import { Icon } from '@iconify/react';
 import axios from "axios";
 import '../../frontend/cartPage.css';
 import test from './test.png'
+import { ipv4 } from "../../ipv4.js";
 
 export default function CartPage() {
-    const ipv4 = "192.168.68.142";//  Enter ipv4 of LAN network connection
     const { id, orderID } = useParams();
     const navigate = useNavigate();
     const [order, setOrder] = useState([]);
@@ -26,31 +26,32 @@ export default function CartPage() {
     }, []);
 
     const updateQuantity = async (foodID, delta) => {
-        const updatedOrder = order.map(item =>
-          item._id === foodID
-            ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-            : item
-        );
-      
+        const updatedOrder = order
+            .map(item =>
+                item._id === foodID
+                    ? { ...item, quantity: item.quantity + delta }
+                    : item
+            )
+            .filter(item => item.quantity > 0); // Remove items with quantity <= 0
+    
         const updatedTotal = updatedOrder.reduce(
-          (total, item) => total + item.Food_Price * item.quantity,
-          0
+            (total, item) => total + item.Food_Price * item.quantity,
+            0
         );
-      
+    
         try {
-          await axios.put(`http://${ipv4}:5000/order/updateOrder/${orderID}`, {
-            Content: updatedOrder,
-            Total: updatedTotal.toFixed(2),
-            Status: "Pending"
-          });
-      
-          setOrder(updatedOrder);
+            await axios.put(`http://${ipv4}:5000/order/updateOrder/${orderID}`, {
+                Content: updatedOrder,
+                Total: updatedTotal.toFixed(2),
+                Status: "Pending"
+            });
+    
+            setOrder(updatedOrder);
         } catch (error) {
-          console.error("Failed to update order", error);
-          alert("Could not update the quantity. Try again.");
+            console.error("Failed to update order", error);
+            alert("Could not update the quantity. Try again.");
         }
-      };
-      
+    };
 
     const calculateTotal = () => {
         return order.reduce((total, item) => total + item.Food_Price * item.quantity, 0).toFixed(2);
@@ -79,7 +80,6 @@ export default function CartPage() {
                             <div className="quantity-control">
                             <button
                                 onClick={() => updateQuantity(item._id, -1)}
-                                disabled={item.quantity <= 1}
                             >−</button>
 
                             <span>{item.quantity}</span>
