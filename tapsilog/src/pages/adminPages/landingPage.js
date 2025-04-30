@@ -1,100 +1,59 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-export default function LandingPage() {
+const Auth = () => {
+    const [isLogin, setIsLogin] = useState(true);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(true); // To toggle between login and register forms
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleLoginSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login validation here (e.g., API call)
-        // After successful login:
-        navigate('/menu');
-    };
+        try {
+            const url = isLogin ? 'http://localhost:5000/login' : 'http://localhost:5000/register';
+            const payload = isLogin ? { email, password } : { username, email, password };
+            const response = await axios.post(url, payload);
+            localStorage.setItem('token', response.data.token);
 
-    const handleRegisterSubmit = (e) => {
-        e.preventDefault();
-        // Handle registration logic here (e.g., API call)
-        // After successful registration:
-        alert("Registration successful! Please login.");
-        setIsLogin(true); // Redirect to login page after successful registration
+            if (isLogin) {
+                navigate('/menu');
+            } else {
+                setIsLogin(true);
+            }
+        } catch (err) {
+            setError(err.response.data.message);
+        }
     };
 
     return (
         <div>
-            <h1>Landing Page</h1>
-            {isLogin ? (
+            <h2>{isLogin ? 'Login' : 'Register'}</h2>
+            {error && <p>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                {!isLogin && (
+                    <div>
+                        <label>Username</label>
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    </div>
+                )}
                 <div>
-                    <h2>Login</h2>
-                    <form onSubmit={handleLoginSubmit}>
-                        <label>
-                            Username:
-                            <input
-                                type="text"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <br />
-                        <label>
-                            Password:
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <br />
-                        <button type="submit">Login</button>
-                    </form>
-                    <p>Don't have an account? <span onClick={() => setIsLogin(false)} style={{ cursor: 'pointer', color: 'blue' }}>Register here</span></p>
+                    <label>Email</label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-            ) : (
                 <div>
-                    <h2>Register</h2>
-                    <form onSubmit={handleRegisterSubmit}>
-                        <label>
-                            Username:
-                            <input
-                                type="text"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <br />
-                        <label>
-                            Password:
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <br />
-                        <button type="submit">Register</button>
-                    </form>
-                    <p>Already have an account? <span onClick={() => setIsLogin(true)} style={{ cursor: 'pointer', color: 'blue' }}>Login here</span></p>
+                    <label>Password</label>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
-            )}
+                <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+            </form>
+            <button onClick={() => setIsLogin(!isLogin)}>
+                {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
+            </button>
         </div>
     );
-}
+};
+
+export default Auth;

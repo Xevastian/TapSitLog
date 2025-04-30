@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes.js";
 import menuRoutes from "./routes/menu.routes.js"; 
 import orderRoutes from "./routes/order.routes.js";
 import tableRoutes from "./routes/table.routes.js";
@@ -19,7 +20,7 @@ mongoose.connect(process.env.MONGO_URI)
     process.exit(1);
   });
 
-
+app.use("/", authRoutes);
 app.use("/menu", menuRoutes);
 app.use("/order", orderRoutes); 
 app.use("/table", tableRoutes);
