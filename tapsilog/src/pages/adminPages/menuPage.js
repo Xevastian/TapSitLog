@@ -1,20 +1,25 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function MenuPage() {
     const navigate = useNavigate();
 
     const nav = (path) => {
         navigate(`/menu/${path}`);
-    }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); 
+        navigate('/');
+    };
 
     return (
         <>
             <div>
-                <h1>Menu Page</h1>
+                <h1>Menu Page</h1> 
             </div>
-            
+
             <button onClick={() => nav('setup')}>
-            Setup Orders
+                Setup Orders
             </button>
 
             <button onClick={() => nav('counter')}>
@@ -28,6 +33,10 @@ export default function MenuPage() {
             <button onClick={() => nav('generate-qr')}>
                 Generate QR
             </button>
+
+            <button onClick={handleLogout}>
+                Logout
+            </button>
         </>
-    )
+    );
 }
