@@ -12,6 +12,10 @@ import OrderPage from './pages/userPages/orderPage.js';
 import CartPage from './pages/userPages/cartPage.js';
 import PayementPage from './pages/userPages/payementPage.js';
 import PrivateRoute from './components/PrivateRoute.js';
+import DashboardPage from './pages/adminPages/menuPages/dashboardPage.js'; //new
+import Menu_Page from './pages/adminPages/menuPages/menu_Page.js';//new
+import InventoryPage from './pages/adminPages/menuPages/inventoryPage.js';//new
+import SalesPage from './pages/adminPages/menuPages/salesPage.js'; //new
 
 function App() {
   return (
@@ -27,6 +31,10 @@ function App() {
       <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
       <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
       <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
+      <Route path="/menu/dashboard" element={<DashboardPage />} /> 
+      <Route path='/menu/menu_page' element={<Menu_Page />} /> 
+      <Route path='/menu/inventory' element={<InventoryPage />} /> 
+      <Route path='/menu/sales' element={<SalesPage />} />
     </Routes>
   );
 }
