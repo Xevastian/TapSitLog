@@ -10,6 +10,10 @@ import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
 import OrderPage from './pages/userPages/orderPage.js';
 import CartPage from './pages/userPages/cartPage.js';
 import PayementPage from './pages/userPages/payementPage.js';
+import DashboardPage from './pages/adminPages/menuPages/dashboardPage.js'; //new
+import Menu_Page from './pages/adminPages/menuPages/menu_Page.js';//new
+import InventoryPage from './pages/adminPages/menuPages/inventoryPage.js';//new
+import SalesPage from './pages/adminPages/menuPages/salesPage.js'; 
 
 function App() {
   return <Routes>
@@ -19,10 +23,14 @@ function App() {
     <Route path='/:id/cart/:cartID/payment/online' element={<PayementPage/>}/>
     <Route path='/:id/cart/:cartID/payment/otc' element={<PayementPage/>}/>
     <Route path='/menu' element={<MenuPage />}/>
+    <Route path="/menu/dashboard" element={<DashboardPage />} />
     <Route path='/menu/setup' element={<SetupOrdersPage />}/>
     <Route path='/menu/counter' element={<CounterPage />}/>
     <Route path='/menu/pending-orders' element={<SaleSummaryPage />}/>
     <Route path='/menu/generate-qr' element={<GenerateQrPage />}/>
+    <Route path='/menu/menu_page' element={<Menu_Page />} /> 
+    <Route path='/menu/inventory' element={<InventoryPage />} />
+    <Route path='/menu/sales' element={<SalesPage />} />
     <Route path="/" element={<LandingPage />}/>
   </Routes>
 }
