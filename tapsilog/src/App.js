@@ -11,24 +11,22 @@ import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
 import OrderPage from './pages/userPages/orderPage.js';
 import CartPage from './pages/userPages/cartPage.js';
 import PayementPage from './pages/userPages/payementPage.js';
-import PrivateRoute from './components/PrivateRoute.js'; 
+import PrivateRoute from './components/PrivateRoute.js';
 
 function App() {
   return (
     <Routes>
-      <Route path='/:id/order' element={<OrderPage />} />
-      <Route path='/:id/cart' element={<CartPage />} />
-      <Route path='/:id/cart/:cartID/payment' element={<PayementPage />} />
-      <Route path='/:id/cart/:cartID/payment/online' element={<PayementPage />} />
-      <Route path='/:id/cart/:cartID/payment/otc' element={<PayementPage />} />
-
+      <Route path='/' element={<LandingPage />} />
+      <Route path='/:id/order' element={<PrivateRoute><OrderPage /></PrivateRoute>} />
+      <Route path='/:id/cart' element={<PrivateRoute><CartPage /></PrivateRoute>} />
+      <Route path='/:id/cart/:cartID/payment' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
+      <Route path='/:id/cart/:cartID/payment/online' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
+      <Route path='/:id/cart/:cartID/payment/otc' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
       <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} />
       <Route path='/menu/setup' element={<PrivateRoute><SetupOrdersPage /></PrivateRoute>} />
       <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
       <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
       <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
-
-      <Route path='/' element={<LandingPage />} />
     </Routes>
   );
 }
