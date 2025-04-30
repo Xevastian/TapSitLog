@@ -34,6 +34,22 @@ export default function MenuPage() {
                 Generate QR
             </button>
 
+            <button onClick={() => nav('dashboard')}>
+                Dashboard
+            </button>
+
+            <button onClick={() => nav('menu_page')}>
+                Menu
+            </button>
+
+            <button onClick={() => nav('inventory')}>
+                Inventory
+            </button>
+
+            <button onClick={() => nav('sales')}>
+                Sales
+            </button>
+                    
             <button onClick={handleLogout}>
                 Logout
             </button>
