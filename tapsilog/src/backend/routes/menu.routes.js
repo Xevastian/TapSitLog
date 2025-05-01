@@ -1,53 +1,75 @@
 import express from "express";
 import Menu from "../models/menuModel.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
 
-router.post("/addMenu", async (req, res) => {
-    const { Food_Name, Food_Price } = req.body;
-    try {
-        const newMenu = new Menu({ Food_Name, Food_Price });
-        await newMenu.save();
-        res.status(201).json(newMenu);
-        console.log("New menu item created:", newMenu);
-    } catch (error) {
-        res.status(500).json({ message: "Error creating menu item", error });
-    }
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    },
 });
+
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedTypes.test(ext)) {
+        cb(null, true);
+    } else {
+        cb(new Error("Only images are allowed"), false);
+    }
+};
+
+const upload = multer({ storage, fileFilter });
 
 router.get("/getMenu", async (req, res) => {
     try {
-        const menuItems = await Menu.find();
-        res.status(200).json(menuItems);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching menu items", error });
+        const menu = await Menu.find();
+        res.json(menu);
+    } catch (err) {
+        res.status(500).json({ message: "Failed to fetch menu", error: err });
     }
 });
 
-router.get("/getMenu/:_id", async (req, res) => {
-    const { _id } = req.params;
+router.post("/addMenu", upload.single("image"), async (req, res) => {
     try {
-        const menuItem = await Menu.findById(_id);
-        if (!menuItem) {
-            return res.status(404).json({ message: "Menu item not found" });
-        }
-        res.status(200).json(menuItem);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching menu item", error });
-    }
-}
-);  
+        const { Food_Name, Food_Price, Food_Category } = req.body;
+        const imagePath = req.file ? req.file.path : null;
 
-router.delete("/deleteMenu/:_id", async (req, res) => {
-    const { _id } = req.params;
+        const newMenu = new Menu({
+            Food_Name,
+            Food_Price,
+            Food_Category,
+            image: imagePath,
+        });
+
+        await newMenu.save();
+        res.status(201).json(newMenu);
+    } catch (err) {
+        res.status(500).json({ message: "Failed to add menu item", error: err.message });
+    }
+});
+
+router.put("/updateMenu/:id", async (req, res) => {
     try {
-        const deletedMenu = await Menu.findByIdAndDelete(_id);
-        if (!deletedMenu) {
-            return res.status(404).json({ message: "Menu item not found" });
-        }
-        res.status(200).json({ message: "Menu item deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error deleting menu item", error });
+        const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedMenu);
+    } catch (err) {
+        res.status(500).json({ message: "Update failed", error: err.message });
+    }
+});
+
+router.delete("/deleteMenu/:id", async (req, res) => {
+    try {
+        await Menu.findByIdAndDelete(req.params.id);
+        res.json({ message: "Menu item deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ message: "Delete failed", error: err.message });
     }
 });
 

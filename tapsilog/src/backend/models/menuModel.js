@@ -9,6 +9,12 @@ const menuShcema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    rating: {
+        type: Number, default: 0 
+    },
+    image: {
+        type: String 
+    },
 });
 
 const Menu = mongoose.model('menus',menuShcema);

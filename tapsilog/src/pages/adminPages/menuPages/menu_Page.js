@@ -14,10 +14,11 @@ export default function Menu_Page() {
     const [isAdding, setIsAdding] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [editItem, setEditItem] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
 
     useEffect(() => {
         fetchMenu();
-    }, []);
+    }, [sortBy]);
 
     const fetchMenu = async () => {
         try {
@@ -51,15 +52,24 @@ export default function Menu_Page() {
     };
 
     const handleAdd = async () => {
+        const formData = new FormData();
+        formData.append("Food_Name", newFood.Food_Name);
+        formData.append("Food_Price", newFood.Food_Price);
+        formData.append("Food_Category", newFood.Food_Category);
+        if (imageFile) formData.append("image", imageFile);
+
         try {
-            const response = await axios.post("http://localhost:5000/menu/addMenu", newFood);
+            const response = await axios.post("http://localhost:5000/menu/addMenu", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             if (response.status === 201) {
                 setNewFood({ Food_Name: "", Food_Price: "", Food_Category: "" });
+                setImageFile(null);
                 setIsAdding(false);
                 fetchMenu();
             }
         } catch (err) {
-            console.error("Add error:", err);
+            console.error("Add with image error:", err);
         }
     };
 
@@ -68,7 +78,8 @@ export default function Menu_Page() {
     };
 
     const handleEdit = (item) => {
-        setEditItem({...item});
+        setEditItem({ ...item });
+        navigate(`/edit/${item._id}`);
     };
 
     const handleEditSave = async () => {
@@ -212,6 +223,11 @@ export default function Menu_Page() {
                         placeholder="Category"
                         value={newFood.Food_Category}
                         onChange={(e) => setNewFood({ ...newFood, Food_Category: e.target.value })}
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImageFile(e.target.files[0])}
                     />
                     <div className="form-buttons">
                         <button onClick={handleAdd}>Save</button>
