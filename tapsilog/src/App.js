@@ -14,16 +14,22 @@ import DashboardPage from './pages/adminPages/menuPages/dashboardPage.js';
 import Menu from './pages/adminPages/menuPages/menu_Page.js';
 import InventoryPage from './pages/adminPages/menuPages/inventoryPage.js';
 import SalesPage from './pages/adminPages/menuPages/salesPage.js';
+import OTCPayementPage from './pages/userPages/paymentPages/OTCPayementPage.js';
+import Gcash from './pages/userPages/paymentPages/onlineOptionsPage/gcash.js';
+import Bank from './pages/userPages/paymentPages/onlineOptionsPage/onlineBank.js';
+import Receipt from './pages/userPages/paymentPages/onlineOptionsPage/eReceipt.js';
 
 function App() {
   return (
     <Routes>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/:id/order' element={<OrderPage />} />
-      <Route path='/:id/cart' element={<CartPage />} />
-      <Route path='/:id/cart/:cartID/payment' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
-      <Route path='/:id/cart/:cartID/payment/online' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
-      <Route path='/:id/cart/:cartID/payment/otc' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
+      <Route path='/:id/order' element={<OrderPage/>}/>
+      <Route path='/:id/order/:orderID' element={<CartPage/>}/>
+      <Route path='/:id/order/:orderID/payment' element={<PayementPage/>}/>
+      <Route path='/:id/order/:orderID/payment/gcsh' element={<Gcash/>}/>
+      <Route path='/:id/order/:orderID/payment/crdt' element={<Bank/>}/>
+      <Route path='/:id/order/:orderID/payment/rcpt' element={<Receipt/>}/>
+      <Route path='/:id/order/:orderID/payment/otc' element={<OTCPayementPage/>}/>
       <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} />
       <Route path='/menu/setup' element={<PrivateRoute><SetupOrdersPage /></PrivateRoute>} />
       <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />

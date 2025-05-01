@@ -1,0 +1,48 @@
+@import 'vars.css';
+
+.bank-navbar{
+    background-color: var(--tertiary-4);
+    display: flex;
+    flex-direction: row;
+    color: var(--primary-white);
+    align-items: center;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5px;
+    margin: 0;
+    left: 0;
+    right: 0;
+}
+
+.bank-navbar h1{
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-regular);
+}
+
+.bank-icon{
+    height: clamp(40px, 50px, 60px);
+    width: clamp(40px, 50px, 60px);
+    margin: clamp(10px, 15px, 25px);
+}
+
+.bank-button-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.bank-button{
+    margin: 12px 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 5px;
+    color: var(--primary-black);
+    background-color: var( --primary-white);
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bank-button-image{
+    margin: 10px 20px 10px 5px;
+    border-radius: 11px;
+}

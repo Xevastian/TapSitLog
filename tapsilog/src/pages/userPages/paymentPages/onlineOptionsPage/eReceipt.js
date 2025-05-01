@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import Barcode from "react-barcode";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import '../../../styles/receipt.css';
-import { ipv4 } from "../../../ipv4.js";
+import '../../../../styles/receipt.css';
+import { ipv4 } from "../../../../ipv4.js";
 
-export default function OTCPayementPage() {
+
+export default function Receipt() {
     const {orderID} = useParams();
     const [order,setOrder] = useState([])
 
@@ -31,7 +31,7 @@ export default function OTCPayementPage() {
     return (
         <div className="receipt">
             <div>
-                <h1>OTC Payement Receipt</h1>
+                <h1>Receipt</h1>
                 <hr/>
                 {order.map((food) => (
                     <div className="food-val" key={order._id}>
@@ -59,17 +59,12 @@ export default function OTCPayementPage() {
                         <h4>Jollikod</h4>
                         </div>
                         <div className="food-val">
-                            <h4>Order ID</h4>
+                            <h4>Order ID: </h4>
                             <h4>{orderID}</h4>
                         </div>
                     <hr/>
                     <h1>Thank You!</h1>
-                    <Barcode value={orderID}  
-                        width={1.1} 
-                        height={100} 
-                        fontSize={16} 
-                        className="bar" />
-                    <h5 style={{color:'#1E1E1E', display:"flex", flexDirection:'column', alignItems:'center'}}>Show to the counter for it to be scanned.</h5>
+                    <h6 style={{color:'#1E1E1E', display:"flex", flexDirection:'column', alignItems:'center'}}>Kindly wait for your order to be served.</h6>
                 </div>
         </div>
     )

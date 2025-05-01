@@ -1,0 +1,14 @@
+:root {
+    --primary-white: #F9F7F7;
+    --primary-balck: #222831;
+    --secondary-black: #393E46;
+    --secondary-white: #DBE2EF;
+    --tertiary-1: #EEEEEE;
+    --tertiary-2: #00ADB5;
+    --tertiary-3: #3F72AF;
+    --tertiary-4: #112D4E;
+
+    --font-family: 'Inter', sans-serif;
+    --font-weight-semibold: 600;
+    --font-weight-regular: 400;
+}

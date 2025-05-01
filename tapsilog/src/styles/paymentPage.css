@@ -1,0 +1,49 @@
+@import 'vars.css';
+
+.payment-navbar{
+    background-color: var(--tertiary-4);
+    display: flex;
+    flex-direction: row;
+    color: var(--primary-white);
+    align-items: center;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5px;
+    margin: 0;
+    left: 0;
+    right: 0;
+}
+
+.payment-navbar h1{
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-regular);
+}
+
+.payment-icon{
+    height: clamp(25px, 30px, 40px);
+    width: clamp(25px, 30px, 40px);
+    margin: clamp(10px, 15px, 25px);
+}
+
+.payment-button-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-button{
+    margin: 12px 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 5px;
+    color: var(--primary-black);
+    background-color: var( --primary-white);
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.3);
+}
+
+.payment-button-icon{
+    height: clamp(25px, 30px, 40px);
+    width: clamp(25px, 30px, 40px);
+    margin: 10px 20px 10px 5px;
+}

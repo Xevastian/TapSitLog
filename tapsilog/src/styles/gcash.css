@@ -1,0 +1,83 @@
+.gcash-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.gcash-container {
+    width: 360px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.gcash-header {
+    background-color: #0076d9;
+    padding: 20px;
+    text-align: center;
+}
+
+.gcash-logo {
+    width: 100px;
+}
+
+.gcash-box {
+    padding: 20px;
+}
+
+.merchant-info p {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.amount {
+    color: #0076d9;
+}
+
+.gcash-login-section p {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.country-code {
+    padding: 10px;
+    background-color: #eee;
+    border-right: 1px solid #ccc;
+}
+
+.mobile-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.next-button {
+    width: 100%;
+    background-color: #0076d9;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.next-button:hover {
+    background-color: #5bb3ff;
+}
