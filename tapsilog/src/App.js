@@ -1,7 +1,5 @@
 import { React } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
-
 import MenuPage from './pages/adminPages/menuPage.js';
 import LandingPage from './pages/adminPages/landingPage.js';
 import GenerateQrPage from './pages/adminPages/menuPages/generateQrPage.js';
@@ -21,8 +19,8 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/:id/order' element={<PrivateRoute><OrderPage /></PrivateRoute>} />
-      <Route path='/:id/cart' element={<PrivateRoute><CartPage /></PrivateRoute>} />
+      <Route path='/:id/order' element={<OrderPage />} />
+      <Route path='/:id/cart' element={<CartPage />} />
       <Route path='/:id/cart/:cartID/payment' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
       <Route path='/:id/cart/:cartID/payment/online' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
       <Route path='/:id/cart/:cartID/payment/otc' element={<PrivateRoute><PayementPage /></PrivateRoute>} />
@@ -31,10 +29,10 @@ function App() {
       <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
       <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
       <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
-      <Route path="/menu/dashboard" element={<DashboardPage />} /> 
-      <Route path='/menu/menu_page' element={<Menu />} /> 
-      <Route path='/menu/inventory' element={<InventoryPage />} /> 
-      <Route path='/menu/sales' element={<SalesPage />} />
+      <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
+      <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
+      <Route path='/menu/inventory' element={<PrivateRoute><InventoryPage /></PrivateRoute>} /> 
+      <Route path='/menu/sales' element={<PrivateRoute><SalesPage /></PrivateRoute>} />
     </Routes>
   );
 }
