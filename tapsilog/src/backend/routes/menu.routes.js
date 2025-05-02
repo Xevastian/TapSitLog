@@ -2,6 +2,7 @@ import express from "express";
 import Menu from "../models/menuModel.js";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
 const router = express.Router();
 
@@ -66,8 +67,23 @@ router.put("/updateMenu/:id", async (req, res) => {
 
 router.delete("/deleteMenu/:id", async (req, res) => {
     try {
+        const menuItem = await Menu.findById(req.params.id);
+
+        if (!menuItem) {
+            return res.status(404).json({ message: "Menu item not found" });
+        }
+
+        if (menuItem.image) {
+            const imagePath = path.resolve(menuItem.image); 
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error("Failed to delete image:", err);
+                }
+            });
+        }
+
         await Menu.findByIdAndDelete(req.params.id);
-        res.json({ message: "Menu item deleted successfully" });
+        res.json({ message: "Menu item and image deleted successfully" });
     } catch (err) {
         res.status(500).json({ message: "Delete failed", error: err.message });
     }
