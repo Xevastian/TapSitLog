@@ -13,7 +13,6 @@ import PrivateRoute from './components/PrivateRoute.js';
 import DashboardPage from './pages/adminPages/menuPages/dashboardPage.js';
 import Menu from './pages/adminPages/menuPages/menu_Page.js';
 import InventoryPage from './pages/adminPages/menuPages/inventoryPage.js';
-import SalesPage from './pages/adminPages/menuPages/salesPage.js';
 import OTCPayementPage from './pages/userPages/paymentPages/OTCPayementPage.js';
 import Gcash from './pages/userPages/paymentPages/onlineOptionsPage/gcash.js';
 import Bank from './pages/userPages/paymentPages/onlineOptionsPage/onlineBank.js';
@@ -38,7 +37,6 @@ function App() {
       <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
       <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
       <Route path='/menu/inventory' element={<PrivateRoute><InventoryPage /></PrivateRoute>} /> 
-      <Route path='/menu/sales' element={<PrivateRoute><SalesPage /></PrivateRoute>} />
     </Routes>
   );
 }

@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Menu_Page() {
-    const navigate = useNavigate();
     const [menu, setMenu] = useState([]);
-    const [sortBy, setSortBy] = useState("");
-    const [newFood, setNewFood] = useState({
-        Food_Name: "",
-        Food_Price: "",
-        Food_Category: "",
-    });
+    const [newFood, setNewFood] = useState({ Food_Name: "", Food_Price: "", Food_Category: "" });
+    const [imageFile, setImageFile] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [editItem, setEditItem] = useState(null);
-    const [imageFile, setImageFile] = useState(null);
+    const [showSortOptions, setShowSortOptions] = useState(false);
 
     useEffect(() => {
         fetchMenu();
-    }, [sortBy]);
+    }, []);
 
     const fetchMenu = async () => {
         try {
@@ -29,405 +23,272 @@ export default function Menu_Page() {
         }
     };
 
-    const handleSort = (type) => {
-        setSortBy(type);
-        let sorted = [...menu];
-        switch (type) {
-            case "price-high":
-                sorted.sort((a, b) => b.Food_Price - a.Food_Price);
-                break;
-            case "price-low":
-                sorted.sort((a, b) => a.Food_Price - b.Food_Price);
-                break;
-            case "category":
-                sorted.sort((a, b) => a.Food_Category.localeCompare(b.Food_Category));
-                break;
-            case "rating-high":
-                sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                break;
-            default:
-                break;
-        }
-        setMenu(sorted);
-    };
-
     const handleAdd = async () => {
+        if (!newFood.Food_Name.trim() || !newFood.Food_Price || !newFood.Food_Category.trim() || !imageFile) {
+            alert("Please fill in all fields and select an image.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("Food_Name", newFood.Food_Name);
         formData.append("Food_Price", newFood.Food_Price);
         formData.append("Food_Category", newFood.Food_Category);
-        if (imageFile) formData.append("image", imageFile);
+        formData.append("foodImage", imageFile); // 'foodImage' matches the field name in multer
 
         try {
             const response = await axios.post("http://localhost:5000/menu/addMenu", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             if (response.status === 201) {
+                alert("Menu item added successfully.");
                 setNewFood({ Food_Name: "", Food_Price: "", Food_Category: "" });
                 setImageFile(null);
                 setIsAdding(false);
                 fetchMenu();
             }
         } catch (err) {
-            console.error("Add with image error:", err);
+            console.error("Error adding menu:", err);
+            alert("Failed to add menu item.");
         }
     };
 
-    const toggleEditMode = () => {
-        setEditMode(!editMode);
+    const handleDelete = async (id) => {
+        try {
+            const res = await axios.delete(`http://localhost:5000/menu/deleteMenu/${id}`);
+            if (res.status === 200) {
+                alert("Menu item deleted.");
+                fetchMenu();
+            }
+        } catch (err) {
+            console.error("Delete error:", err);
+            alert("Delete failed.");
+        }
     };
 
     const handleEdit = (item) => {
         setEditItem({ ...item });
-        navigate(`/edit/${item._id}`);
     };
 
     const handleEditSave = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/menu/updateMenu/${editItem._id}`, editItem);
-            if (response.status === 200) {
+            const res = await axios.put(`http://localhost:5000/menu/updateMenu/${editItem._id}`, editItem);
+            if (res.status === 200) {
                 setEditItem(null);
                 fetchMenu();
             }
         } catch (err) {
             console.error("Update error:", err);
+            alert("Update failed.");
         }
     };
 
-    const handleEditCancel = () => {
-        setEditItem(null);
+    const handleSort = (type) => {
+        let sorted = [...menu];
+        switch (type) {
+            case "price-high": 
+                sorted.sort((a, b) => b.Food_Price - a.Food_Price); 
+                break;
+            case "price-low": 
+                sorted.sort((a, b) => a.Food_Price - b.Food_Price); 
+                break;
+            default: return;
+        }
+        setMenu(sorted);
     };
 
-    const renderStarRating = (rating) => {
-        if (!rating) return null;
-        return (
-            <span className="star-rating">
-                ★ {rating.toFixed(1)}
-            </span>
-        );
-    };
+    const renderStarRating = (rating) => rating ? <span className="star-rating">★ {rating.toFixed(1)}</span> : null;
+
     return (
         <div className="menu-container">
             <header className="menu-header">
                 <h1>Menu</h1>
                 <div className="menu-actions">
-                    <button 
-                        className="edit-button" 
-                        onClick={toggleEditMode}
-                    >
-                        ✏️ Edit
-                    </button>
-                    <button 
-                        className="sort-button" 
-                        onClick={() => {
-                            const sortOptions = document.getElementById("sortOptions");
-                            sortOptions.style.display = 
-                                sortOptions.style.display === "block" ? "none" : "block";
-                        }}
-                    >
-                        Sort By
-                    </button>
-                    <div id="sortOptions" className="sort-options" style={{ display: "none" }}>
-                        <button onClick={() => handleSort("price-high")}>Price (High to Low)</button>
-                        <button onClick={() => handleSort("price-low")}>Price (Low to High)</button>
-                        <button onClick={() => handleSort("category")}>Category</button>
-                        <button onClick={() => handleSort("rating-high")}>Rating</button>
-                    </div>
+                    <button onClick={() => setEditMode(!editMode)}>✏️ Edit</button>
+                    <button onClick={() => setShowSortOptions(!showSortOptions)}>Sort By</button>
                 </div>
             </header>
 
+            {showSortOptions && (
+                <div className="sort-options">
+                    <button onClick={() => handleSort("price-high")}>Price (High to Low)</button>
+                    <button onClick={() => handleSort("price-low")}>Price (Low to High)</button>
+                </div>
+            )}
+
             <div className="menu-table">
                 <div className="menu-table-header">
-                    <div className="col food-name">Food Name</div>
-                    <div className="col price">Price</div>
-                    <div className="col category">Category</div>
-                    <div className="col ratings">Ratings</div>
+                    <div className="col">Food Name</div>
+                    <div className="col">Price</div>
+                    <div className="col">Category</div>
+                    <div className="col">Ratings</div>
                 </div>
-
-                <div className="menu-table-body">
-                    {menu.map((item) => (
-                        <div key={item._id} className="menu-row">
-                            {editItem && editItem._id === item._id ? (
-                                <>
-                                console.log(editItem)
-                                    <div className="col food-name">
-                                        <input
-                                            type="text"
-                                            value={editItem.Food_Name}
-                                            onChange={(e) => setEditItem({...editItem, Food_Name: e.target.value})}
-                                        />
+                {menu.map((item) => (
+                    <div key={item._id} className="menu-row">
+                        {editItem && editItem._id === item._id ? (
+                            <>
+                                <div className="col"><input value={editItem.Food_Name} onChange={(e) => setEditItem({ ...editItem, Food_Name: e.target.value })} /></div>
+                                <div className="col"><input type="number" value={editItem.Food_Price} onChange={(e) => setEditItem({ ...editItem, Food_Price: parseFloat(e.target.value) || 0 })} /></div>
+                                <div className="col"><input value={editItem.Food_Category} onChange={(e) => setEditItem({ ...editItem, Food_Category: e.target.value })} /></div>
+                                <div className="col">
+                                    <input type="number" step="0.1" value={editItem.rating || ""} onChange={(e) => setEditItem({ ...editItem, rating: parseFloat(e.target.value) || 0 })} />
+                                    <div className="edit-actions">
+                                        <button onClick={handleEditSave}>Save</button>
+                                        <button onClick={() => setEditItem(null)}>Cancel</button>
                                     </div>
-                                    <div className="col price">
-                                        <input
-                                            type="number"
-                                            value={editItem.Food_Price}
-                                            onChange={(e) => setEditItem({...editItem, Food_Price: parseFloat(e.target.value) || 0})}
-                                        />
-                                    </div>
-                                    <div className="col category">
-                                        <input
-                                            type="text"
-                                            value={editItem.Food_Category}
-                                            onChange={(e) => setEditItem({...editItem, Food_Category: e.target.value})}
-                                        />
-                                       { console.log(item.Food_Category)}
-                                    </div>
-                                    <div className="col ratings">
-                                        <input
-                                            type="number"
-                                            step="0.1"
-                                            min="0"
-                                            max="5"
-                                            value={editItem.rating || ""}
-                                            onChange={(e) => setEditItem({...editItem, rating: parseFloat(e.target.value) || 0})}
-                                        />
-                                        <div className="edit-actions">
-                                            <button onClick={handleEditSave}>Save</button>
-                                            <button onClick={handleEditCancel}>Cancel</button>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="col food-name">{item.Food_Name}</div>
-                                    <div className="col price">₱{item.Food_Price.toFixed(2)}</div>
-                                    <div className="col category">{item.Food_Category}</div>
-                                    <div className="col ratings">
-                                        {renderStarRating(item.rating)}
-                                        {editMode && (
-                                            <button className="edit-item-btn" onClick={() => handleEdit(item)}>Edit</button>
-                                        )}
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="col">{item.Food_Name}</div>
+                                <div className="col">₱{item.Food_Price.toFixed(2)}</div>
+                                <div className="col">{item.Food_Category}</div>
+                                <div className="col">
+                                    {renderStarRating(item.rating)}
+                                    {editMode && <button onClick={() => handleEdit(item)}>Edit</button>}
+                                    {editMode && <button onClick={() => handleDelete(item._id)}>🗑️</button>}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                ))}
             </div>
 
             {isAdding ? (
                 <div className="add-item-form">
-                    <input
-                        type="text"
-                        placeholder="Food Name"
-                        value={newFood.Food_Name}
-                        onChange={(e) => setNewFood({ ...newFood, Food_Name: e.target.value })}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Price"
-                        value={newFood.Food_Price}
-                        onChange={(e) => setNewFood({ ...newFood, Food_Price: parseFloat(e.target.value) || "" })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Category"
-                        value={newFood.Food_Category}
-                        onChange={(e) => setNewFood({ ...newFood, Food_Category: e.target.value })}
-                    />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setImageFile(e.target.files[0])}
-                    />
+                    <input placeholder="Food Name" value={newFood.Food_Name} onChange={(e) => setNewFood({ ...newFood, Food_Name: e.target.value })} />
+                    <input type="number" placeholder="Price" value={newFood.Food_Price} onChange={(e) => setNewFood({ ...newFood, Food_Price: parseFloat(e.target.value) || "" })} />
+                    <input placeholder="Category" value={newFood.Food_Category} onChange={(e) => setNewFood({ ...newFood, Food_Category: e.target.value })} />
+                    <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
                     <div className="form-buttons">
                         <button onClick={handleAdd}>Save</button>
                         <button onClick={() => setIsAdding(false)}>Cancel</button>
                     </div>
                 </div>
             ) : (
-                <button 
-                    className="add-button" 
-                    onClick={() => setIsAdding(true)}
-                >
-                    + Add
-                </button>
+                <button className="add-button" onClick={() => setIsAdding(true)}>+ Add</button>
             )}
 
             <style jsx>{`
                 .menu-container {
-                    max-width: 100%;
+                    max-width: 900px;
                     margin: 0 auto;
-                    padding: 20px;
+                    padding: 2rem;
                     font-family: Arial, sans-serif;
                 }
-                
                 .menu-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 20px;
                 }
-                
-                .menu-header h1 {
-                    font-size: 32px;
-                    margin: 0;
-                }
-                
-                .menu-actions {
-                    display: flex;
-                    gap: 10px;
-                    position: relative;
-                }
-                
-                .edit-button, .sort-button {
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    border: 1px solid #ccc;
-                    background: white;
-                    cursor: pointer;
-                }
-                
-                .sort-options {
-                    position: absolute;
-                    right: 0;
-                    top: 40px;
-                    background: white;
-                    border: 1px solid #eee;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                    z-index: 10;
-                }
-                
-                .sort-options button {
-                    display: block;
-                    width: 100%;
-                    padding: 8px 16px;
-                    text-align: left;
+                .menu-actions button {
+                    margin-left: 10px;
+                    padding: 0.4rem 0.8rem;
+                    background-color: #007bff;
+                    color: white;
                     border: none;
-                    background: none;
+                    border-radius: 6px;
                     cursor: pointer;
                 }
-                
-                .sort-options button:hover {
-                    background: #f5f5f5;
-                }
-                
-                .menu-table {
-                    background: #f5f5f5;
-                    border-radius: 12px;
-                    overflow: hidden;
-                    margin-bottom: 20px;
-                }
-                
-                .menu-table-header {
+                .sort-options {
                     display: flex;
-                    padding: 15px;
-                    background: #f0f0f0;
+                    gap: 0.5rem;
+                    margin: 10px 0;
+                }
+                .sort-options button {
+                    background: #6c757d;
+                    color: white;
+                    border: none;
+                    padding: 6px 12px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                .menu-table {
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    margin-top: 1rem;
+                    overflow: hidden;
+                }
+                .menu-table-header, .menu-row {
+                    display: grid;
+                    grid-template-columns: 2fr 1fr 1.5fr 2fr;
+                    padding: 0.75rem 1rem;
+                    border-bottom: 1px solid #eee;
+                    align-items: center;
+                }
+                .menu-table-header {
+                    background-color: #f5f5f5;
                     font-weight: bold;
                 }
-                
-                .menu-row {
-                    display: flex;
-                    padding: 15px;
-                    border-bottom: 1px solid #eee;
-                    background: white;
-                    margin: 5px 0;
-                    border-radius: 8px;
+                .menu-row:nth-child(even) {
+                    background: #fafafa;
                 }
-                
-                .col {
-                    flex: 1;
-                }
-                
-                .food-name {
-                    flex: 2;
-                }
-                
-                .star-rating {
-                    color: #4a6eb5;
-                }
-                
-                .edit-item-btn {
-                    margin-left: 10px;
-                    padding: 2px 8px;
-                    background: #f0f0f0;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    cursor: pointer;
-                }
-                
-                .edit-actions {
-                    display: flex;
-                    gap: 8px;
-                    margin-top: 8px;
-                }
-                
-                .edit-actions button {
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    border: none;
-                    font-size: 12px;
-                    cursor: pointer;
-                }
-                
-                .edit-actions button:first-child {
-                    background: #4a6eb5;
-                    color: white;
-                }
-                
-                .edit-actions button:last-child {
-                    background: #f0f0f0;
-                    border: 1px solid #ddd;
-                }
-                
                 .menu-row input {
                     width: 90%;
-                    padding: 6px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
+                    padding: 0.3rem;
+                    border-radius: 5px;
+                    border: 1px solid #ccc;
                 }
-                
-                .add-button {
-                    display: inline-block;
-                    padding: 8px 16px;
+                .star-rating {
+                    color: #f39c12;
+                }
+                .edit-actions {
+                    margin-top: 5px;
+                    display: flex;
+                    gap: 6px;
+                }
+                .edit-actions button {
+                    padding: 3px 6px;
+                    border-radius: 4px;
                     border: none;
-                    background: none;
-                    color: #4a6eb5;
-                    font-weight: bold;
                     cursor: pointer;
                 }
-                
+                .edit-actions button:first-child {
+                    background: #28a745;
+                    color: white;
+                }
+                .edit-actions button:last-child {
+                    background: #ccc;
+                }
+                .add-button {
+                    margin-top: 1rem;
+                    background: none;
+                    color: #007bff;
+                    font-weight: bold;
+                    border: none;
+                    cursor: pointer;
+                }
                 .add-item-form {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 10px;
-                    background: #f5f5f5;
-                    padding: 15px;
-                    border-radius: 8px;
+                    margin-top: 1rem;
+                    background: #f8f9fa;
+                    padding: 1rem;
+                    border-radius: 10px;
                 }
-                
                 .add-item-form input {
-                    flex: 1;
+                    padding: 0.5rem;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
                     min-width: 200px;
-                    padding: 8px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
                 }
-                
                 .form-buttons {
                     display: flex;
                     gap: 10px;
-                    margin-top: 10px;
                     width: 100%;
                 }
-                
                 .form-buttons button {
-                    padding: 8px 16px;
+                    padding: 0.5rem 1rem;
                     border: none;
-                    border-radius: 4px;
+                    border-radius: 6px;
                     cursor: pointer;
                 }
-                
                 .form-buttons button:first-child {
-                    background: #4a6eb5;
+                    background: #28a745;
                     color: white;
                 }
-                
                 .form-buttons button:last-child {
-                    background: #f5f5f5;
-                    border: 1px solid #ddd;
+                    background: #ccc;
                 }
             `}</style>
         </div>

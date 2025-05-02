@@ -11,10 +11,31 @@ export default function PendingOrderPage() {
     const fetchOrders = async () => {
         try {
             const response = await axios.get("http://localhost:5000/order/getOrder");
-            setPendingOrders(response.data.filter(order => order.Status === "paid"));
+            setPendingOrders(response.data.filter(order => order.Status === "unpaid" || order.Status === "pending"));
         } catch (e) {
             console.error("Error fetching orders:", e);
             alert("Failed to fetch orders.");
+        }
+    };
+
+    const handleStatusChange = async (orderId, newStatus) => {
+        try {
+            const orderToUpdate = pendingOrders.find(order => order._id === orderId);
+            const updatedOrder = {
+                ...orderToUpdate,
+                Status: newStatus
+            };
+
+            await axios.put(`http://localhost:5000/order/updateOrder/${orderId}`, updatedOrder);
+
+            setPendingOrders(prev =>
+                prev.map(order =>
+                    order._id === orderId ? { ...order, Status: newStatus } : order
+                )
+            );
+        } catch (error) {
+            console.error("Error updating status:", error);
+            alert("Failed to update order status.");
         }
     };
 
@@ -28,6 +49,18 @@ export default function PendingOrderPage() {
                     {pendingOrders.map((order) => (
                         <li key={order._id}>
                             <h3>Order ID: {order._id}</h3>
+                            <label>
+                                Status:
+                                <select
+                                    value={order.Status}
+                                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                                >
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="serve">Serve</option>
+                                </select>
+                            </label>
                             <ul>
                                 {order.Content.map((item, index) => (
                                     <li key={index}>

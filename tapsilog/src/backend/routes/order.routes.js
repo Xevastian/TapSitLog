@@ -3,13 +3,16 @@ import Order from "../models/orderModel.js";
 
 const router = express.Router();
 
-router.post("/addOrder", async(req, res) => {
-    const {Content, Total,TableID, Status,CustomerNumber} = req.body;
-    if(!Status) {
-        req.body.Status = 'unpaid';
-    }
+router.post("/addOrder", async (req, res) => {
+    const { Content, Total, TableID, Status, CustomerNumber } = req.body;
     try {
-        const newOrder = new Order({Content, Total, TableID, Status, CustomerNumber});
+        const newOrder = new Order({
+            Content,
+            Total,
+            TableID,
+            CustomerNumber,
+            Status: Status || "unpaid" 
+        });
         await newOrder.save();
         res.status(201).json(newOrder);
         console.log("New order created:", newOrder);
@@ -58,6 +61,7 @@ router.put("/updateOrder/:OrderID", async (req, res) => {
     }
 });
 
+// Delete an order
 router.delete("/deleteOrder/:OrderID", async (req, res) => {
     const { OrderID } = req.params;
     try {
@@ -68,6 +72,28 @@ router.delete("/deleteOrder/:OrderID", async (req, res) => {
         res.status(200).json({ message: "Order deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Error deleting order", error });
+    }
+});
+
+router.get("/completed", async (req, res) => {
+    try {
+        const completedOrders = await Order.find({
+            Status: { $in: ["paid", "serve"] }
+        }).populate('TableID');
+        res.status(200).json(completedOrders);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching completed orders", error });
+    }
+});
+
+router.get("/pending", async (req, res) => {
+    try {
+        const pendingOrders = await Order.find({
+            Status: { $nin: ["paid", "serve"] }
+        }).populate('TableID');
+        res.status(200).json(pendingOrders);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching pending orders", error });
     }
 });
 
