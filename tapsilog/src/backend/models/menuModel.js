@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const menuShcema = new mongoose.Schema({
+const menuSchema = new mongoose.Schema({
     Food_Name:{
         type:String,
         required: true
@@ -9,14 +9,18 @@ const menuShcema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    rating: {
-        type: Number, default: 0 
+    Food_Category: {
+        type: String,
+        required: true,
     },
-    image: {
+    Food_Image: {
         type: String 
     },
+},
+{
+    collection: 'menus',
 });
 
-const Menu = mongoose.model('menus',menuShcema);
+const Menu = mongoose.model('menus',menuSchema);
 
 export default Menu;

@@ -7,26 +7,17 @@ import fs from "fs";
 const router = express.Router();
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
+    destination: (req, file, cb) =>{
+        cb(null, "../uploads/");
     },
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
+        const uniqueSuffix = Date.now();
+        cb(null, uniqueSuffix + file.originalname);
     },
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif/;
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (allowedTypes.test(ext)) {
-        cb(null, true);
-    } else {
-        cb(new Error("Only images are allowed"), false);
-    }
-};
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage: storage});
 
 router.get("/getMenu", async (req, res) => {
     try {
@@ -37,16 +28,16 @@ router.get("/getMenu", async (req, res) => {
     }
 });
 
-router.post("/addMenu", upload.single("image"), async (req, res) => {
+router.post("/addMenu", upload.single("foodImage"), async (req, res) => {
     try {
-        const { Food_Name, Food_Price, Food_Category } = req.body;
+        const { Food_Name, Food_Price, Food_Category} = req.body;
         const imagePath = req.file ? req.file.path : null;
 
         const newMenu = new Menu({
             Food_Name,
             Food_Price,
             Food_Category,
-            image: imagePath,
+            Food_Image: imagePath,
         });
 
         await newMenu.save();

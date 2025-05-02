@@ -106,7 +106,6 @@ export default function Menu_Page() {
             </span>
         );
     };
-
     return (
         <div className="menu-container">
             <header className="menu-header">
@@ -150,6 +149,7 @@ export default function Menu_Page() {
                         <div key={item._id} className="menu-row">
                             {editItem && editItem._id === item._id ? (
                                 <>
+                                console.log(editItem)
                                     <div className="col food-name">
                                         <input
                                             type="text"
@@ -170,6 +170,7 @@ export default function Menu_Page() {
                                             value={editItem.Food_Category}
                                             onChange={(e) => setEditItem({...editItem, Food_Category: e.target.value})}
                                         />
+                                       { console.log(item.Food_Category)}
                                     </div>
                                     <div className="col ratings">
                                         <input
