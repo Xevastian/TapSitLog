@@ -5,6 +5,7 @@ export default function SetupOrdersPage() {
     const [menu, setMenu] = useState([]);
     const [foodName, setFoodName] = useState("");
     const [foodPrice, setFoodPrice] = useState("");
+    const [foodImage, setFoodImage] = useState();
 
     useEffect(() => {
         fetchMenu();
@@ -33,23 +34,36 @@ export default function SetupOrdersPage() {
         }
     };
 
-    const addMenu = async () => {
-        if (!foodName.trim() || !foodPrice.trim()) {
+    const onInputChange = (e) => {
+        console.log(e.target.files[0]);
+        setFoodImage(e.target.files[0]);
+    };
+
+    const addMenu = async (e) => {
+        e.preventDefault();
+
+        if (!foodName.trim() || !foodPrice.trim() || !foodImage) {
             alert("Please fill in both fields.");
             return;
         }
+        const formData = new FormData();
+        formData.append("Food_Name", foodName);
+        formData.append("Food_Price", foodPrice);
+        formData.append("Food_Category", 0);
+        formData.append("foodImage", foodImage);
 
         try {
-            const response = await axios.post("http://localhost:5000/menu/addMenu", {
-                Food_Name: foodName,
-                Food_Price: parseFloat(foodPrice),
+            const response = await axios.post("http://localhost:5000/menu/addMenu", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
+            console.log(response.data);
 
             if (response.status === 201) {
                 alert("Menu item added successfully.");
                 setMenu([...menu, response.data]); 
                 setFoodName("");
                 setFoodPrice("");
+
                 fetchMenu();
             }
         } catch (e) {
@@ -57,6 +71,7 @@ export default function SetupOrdersPage() {
             alert("Failed to add menu item. Please try again.");
         }
     };
+
 
     return (
         <div>
@@ -81,10 +96,18 @@ export default function SetupOrdersPage() {
                     onChange={(e) => setFoodPrice(e.target.value)} 
                     required 
                 />
+                <br/>
+                <label htmlFor="Image">Image:</label><br />
+                <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={onInputChange}
+                    required 
+                />
                 <button 
                     type="button" 
                     onClick={addMenu}
-                    disabled={!foodName.trim() || !foodPrice.trim()}
+                    disabled={!foodName.trim() || !foodPrice.trim() || !foodImage}
                 >
                     Submit
                 </button>
