@@ -8,24 +8,20 @@ export default function PendingOrderPage() {
         fetchOrders();
     }, []);
 
-    const fetchOrders = async () => {
-        try {
-            const response = await axios.get("http://localhost:5000/order/getOrder");
-            const sortedOrders = response.data
-            .filter(order => order.Status === "served" || order.Status === "paid")
-            .sort((a, b) => {
-                // Priority: "paid" comes before "served and based on when they were ordered"
-                if (a.Status === "paid" && b.Status !== "paid") return -1;
-                if (a.Status !== "paid" && b.Status === "paid") return 1;
-                    return new Date(a.OrderedAt) - new Date(b.OrderedAt);
-                });
-            setPendingOrders(sortedOrders);
-        } catch (e) {
-            console.error("Error fetching orders:", e);
-            alert("Failed to fetch orders.");
-        }
-    };
+const fetchOrders = async () => {
+    try {
+        const response = await axios.get("http://localhost:5000/order/getOrder");
+        const sortedOrders = response.data
+            .filter(order => order.Status === "paid")  
+            .sort((a, b) => new Date(a.OrderedAt) - new Date(b.OrderedAt));  
+        setPendingOrders(sortedOrders);
+    } catch (e) {
+        console.error("Error fetching orders:", e);
+        alert("Failed to fetch orders.");
+    }
+};
 
+    
     const handleStatusChange = async (orderId, newStatus) => {
         try {
             const orderToUpdate = pendingOrders.find(order => order._id === orderId);

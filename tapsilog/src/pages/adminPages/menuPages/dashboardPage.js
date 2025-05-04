@@ -6,30 +6,30 @@ export default function DashboardPage() {
     const [pendingCount, setPendingCount] = useState(0);
     const [totalSales, setTotalSales] = useState(0);
     const [topItems, setTopItems] = useState([]);
-
+    
     const fetchSummary = useCallback(async () => {
-        try {
-            const [resAllOrders, resTopSelling] = await Promise.all([
-                axios.get("http://localhost:5000/order/getOrder"),
-                axios.get("http://localhost:5000/order/top-selling")
-            ]);
+    try {
+        const [resCompleted, resPending, resTop] = await Promise.all([
+            axios.get("http://localhost:5000/order/completed"),  
+            axios.get("http://localhost:5000/order/pending"),    
+            axios.get("http://localhost:5000/order/top-selling"),
+        ]);
 
-            const orders = resAllOrders.data;
+        const completed = resCompleted.data; 
+        const pending = resPending.data;  
 
-            const completedOrders = orders.filter(order => order.Status === "served");
-            const pendingOrders = orders.filter(order => order.Status === "paid");
+        const totalSalesAmount = completed.reduce((sum, order) => sum + order.Total, 0);
 
-            const sales = completedOrders.reduce((sum, order) => sum + order.Total, 0);
+        setCompletedCount(completed.length);
+        setPendingCount(pending.length);
+        setTotalSales(totalSalesAmount.toFixed(2));
+        setTopItems(resTop.data);
+    } catch (err) {
+        console.error("Error fetching summary:", err);
+        alert("Failed to load dashboard summary.");
+    }
+}, []);
 
-            setCompletedCount(completedOrders.length);
-            setPendingCount(pendingOrders.length);
-            setTotalSales(sales.toFixed(2));
-            setTopItems(resTopSelling.data);
-        } catch (err) {
-            console.error("Error fetching dashboard summary:", err);
-            alert("Failed to load dashboard summary.");
-        }
-    }, []);
 
     useEffect(() => {
         fetchSummary();
@@ -54,7 +54,7 @@ export default function DashboardPage() {
                 <div className="card" style={cardStyle}>
                     <h2>Top 3 Best-Selling Items</h2>
                     {topItems.length === 0 ? (
-                        <p>No data available.</p>
+                        <p>No data.</p>
                     ) : (
                         <ol>
                             {topItems.map((item, index) => (

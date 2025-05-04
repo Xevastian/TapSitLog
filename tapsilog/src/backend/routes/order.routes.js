@@ -18,7 +18,6 @@ router.post("/addOrder", async (req, res) => {
         console.log("New order created:", newOrder);
     } catch (error) {
         res.status(500).json({ message: "Error creating order", error });
-        console.error("Error creating order:", error);
     }
 });
 
@@ -62,6 +61,7 @@ router.put("/updateOrder/:OrderID", async (req, res) => {
     }
 });
 
+// Delete an order
 router.delete("/deleteOrder/:OrderID", async (req, res) => {
     const { OrderID } = req.params;
     try {
@@ -78,7 +78,7 @@ router.delete("/deleteOrder/:OrderID", async (req, res) => {
 router.get("/completed", async (req, res) => {
     try {
         const completedOrders = await Order.find({
-            Status: { $in: ["paid", "served"] }
+            Status: "served"  
         }).populate('TableID');
         res.status(200).json(completedOrders);
     } catch (error) {
@@ -86,10 +86,11 @@ router.get("/completed", async (req, res) => {
     }
 });
 
+
 router.get("/pending", async (req, res) => {
     try {
         const pendingOrders = await Order.find({
-            Status: { $ne: "served" }
+            Status: "paid"  
         }).populate('TableID');
         res.status(200).json(pendingOrders);
     } catch (error) {
@@ -97,9 +98,12 @@ router.get("/pending", async (req, res) => {
     }
 });
 
+
 router.get("/top-selling", async (req, res) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find({
+            Status: { $in: ["paid", "served"] }
+        });
 
         const salesMap = {};
 
@@ -117,8 +121,8 @@ router.get("/top-selling", async (req, res) => {
         });
 
         const topItems = Object.entries(salesMap)
-            .sort((a, b) => b[1] - a[1]) 
-            .slice(0, 3)                 
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3)
             .map(([Food_Name, quantity]) => ({ Food_Name, quantity }));
 
         res.status(200).json(topItems);
@@ -126,7 +130,5 @@ router.get("/top-selling", async (req, res) => {
         res.status(500).json({ message: "Error fetching top selling items", error });
     }
 });
-
-
 
 export default router;
