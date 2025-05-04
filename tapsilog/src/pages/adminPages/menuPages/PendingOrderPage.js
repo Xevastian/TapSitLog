@@ -2,29 +2,33 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function PendingOrderPage() {
-    const [pendingOrders, setPendingOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         fetchOrders();
     }, []);
 
-const fetchOrders = async () => {
-    try {
-        const response = await axios.get("http://localhost:5000/order/getOrder");
-        const sortedOrders = response.data
-            .filter(order => order.Status === "paid")  
-            .sort((a, b) => new Date(a.OrderedAt) - new Date(b.OrderedAt));  
-        setPendingOrders(sortedOrders);
-    } catch (e) {
-        console.error("Error fetching orders:", e);
-        alert("Failed to fetch orders.");
-    }
-};
+    const fetchOrders = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/order/getOrder");
+            const sortedOrders = response.data
+                .sort((a, b) => {
+                    const statusOrder = { unpaid: 1, paid: 2, served: 3 };
+                    if (statusOrder[a.Status] !== statusOrder[b.Status]) {
+                        return statusOrder[a.Status] - statusOrder[b.Status];
+                    }
+                    return new Date(a.OrderedAt) - new Date(b.OrderedAt);
+                });
+            setOrders(sortedOrders);
+        } catch (e) {
+            console.error("Error fetching orders:", e);
+            alert("Failed to fetch orders.");
+        }
+    };
 
-    
     const handleStatusChange = async (orderId, newStatus) => {
         try {
-            const orderToUpdate = pendingOrders.find(order => order._id === orderId);
+            const orderToUpdate = orders.find(order => order._id === orderId);
             const updatedOrder = {
                 ...orderToUpdate,
                 Status: newStatus
@@ -41,12 +45,12 @@ const fetchOrders = async () => {
 
     return (
         <div>
-            <h1>Pending Order Page</h1>
-            {pendingOrders.length === 0 ? (
+            <h1>Order Page</h1>
+            {orders.length === 0 ? (
                 <p>No orders.</p>
             ) : (
                 <ul>
-                    {pendingOrders.map((order) => (
+                    {orders.map((order) => (
                         <li key={order._id}>
                             <h3>Order ID: {order._id}</h3>
                             <label>
@@ -55,7 +59,8 @@ const fetchOrders = async () => {
                                     value={order.Status}
                                     onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                 >
-                                    <option value="paid">Pending</option>
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="paid">Paid</option>
                                     <option value="served">Served</option>
                                 </select>
                             </label>
