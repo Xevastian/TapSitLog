@@ -9,24 +9,24 @@ export default function DashboardPage() {
 
     const fetchSummary = useCallback(async () => {
         try {
-            const [resCompleted, resPending, resTop] = await Promise.all([
-                axios.get("http://localhost:5000/order/completed"),
-                axios.get("http://localhost:5000/order/pending"),
-                axios.get("http://localhost:5000/order/top-selling"),
+            const [resAllOrders, resTopSelling] = await Promise.all([
+                axios.get("http://localhost:5000/order/getOrder"),
+                axios.get("http://localhost:5000/order/top-selling")
             ]);
 
-            const completed = resCompleted.data.filter(order =>
-                order.Status === "paid" || order.Status === "served"
-            );
+            const orders = resAllOrders.data;
 
-            const totalSalesAmount = completed.reduce((sum, order) => sum + order.Total, 0);
+            const completedOrders = orders.filter(order => order.Status === "served");
+            const pendingOrders = orders.filter(order => order.Status === "paid");
 
-            setCompletedCount(completed.length);
-            setPendingCount(resPending.data.length);
-            setTotalSales(totalSalesAmount.toFixed(2));
-            setTopItems(resTop.data);
+            const sales = completedOrders.reduce((sum, order) => sum + order.Total, 0);
+
+            setCompletedCount(completedOrders.length);
+            setPendingCount(pendingOrders.length);
+            setTotalSales(sales.toFixed(2));
+            setTopItems(resTopSelling.data);
         } catch (err) {
-            console.error("Error fetching summary:", err);
+            console.error("Error fetching dashboard summary:", err);
             alert("Failed to load dashboard summary.");
         }
     }, []);
@@ -54,7 +54,7 @@ export default function DashboardPage() {
                 <div className="card" style={cardStyle}>
                     <h2>Top 3 Best-Selling Items</h2>
                     {topItems.length === 0 ? (
-                        <p>No data.</p>
+                        <p>No data available.</p>
                     ) : (
                         <ol>
                             {topItems.map((item, index) => (
