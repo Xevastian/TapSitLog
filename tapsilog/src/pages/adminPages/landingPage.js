@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,13 @@ const Auth = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/menu'); 
+        }
+    }, [navigate]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -19,7 +26,7 @@ const Auth = () => {
             localStorage.setItem('token', response.data.token);
 
             if (isLogin) {
-                navigate('/menu');
+                navigate('/menu'); 
             } else {
                 setIsLogin(true);
             }
