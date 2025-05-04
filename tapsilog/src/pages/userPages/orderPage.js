@@ -11,6 +11,7 @@ export default function OrderPage() {
     const navigate = useNavigate();
     const [menus, setMenu] = useState([]);
     const [order, setOrder] = useState([]);
+    const [topMeal, setTopMeal] = useState([]);
 
     const categories = [
         {
@@ -69,7 +70,9 @@ export default function OrderPage() {
     const fetchMenu = async () => {
         try {
             const response = await axios.get(`http://${ipv4}:5000/menu/getMenu`);
+
             setMenu(response.data);
+            
         } catch (e) {
             console.error("Error fetching menu:", e);
             alert("Failed to fetch menu.");
@@ -80,6 +83,45 @@ export default function OrderPage() {
         fetchMenu();
     }, []);
 
+    const fetchTopMeal = async () => {
+        try {
+            const response = await axios.get(`http://${ipv4}:5000/order/completed`);
+            const allOrders = response.data;
+            const foodMap = new Map();
+            // Aggregate quantity per food item
+            allOrders.forEach(order => {
+                if (Array.isArray(order.Content)) {
+                    order.Content.forEach(item => {
+                        const existing = foodMap.get(item._id);
+                        if (existing) {
+                            existing.totalQuantity += item.quantity;
+                        } else {
+                            foodMap.set(item._id, {
+                                _id: item._id,
+                                Food_Name: item.Food_Name,
+                                Food_Price: item.Food_Price,
+                                totalQuantity: item.quantity,
+                            });
+                        }
+                    });
+                }
+            });
+            const sortedTopMeals = Array.from(foodMap.values())
+                .sort((a, b) => b.totalQuantity - a.totalQuantity)
+                .slice(0, 5); 
+            setTopMeal(sortedTopMeals);
+    
+        } catch (e) {
+            console.error("Error fetching top meal:", e);
+            alert("Failed to fetch top meal.");
+        }
+    };
+    
+    useEffect(() => {
+        fetchTopMeal();
+    }
+    , []);
+    
     return (
         <>
             <div className="orderPage">
@@ -116,63 +158,129 @@ export default function OrderPage() {
                     </div>
                 </div>
                 <div className="menu-container">
+                    {/* Best Sellers Section */}
+                    <div id="best-sellers" className="menu-section">
+                        <h3 className="menu-section-header">Best Seller</h3>
+                        <div className="menu-items">
+                            {menus
+                                .filter(menu => 
+                                    topMeal.some(top => top._id === menu._id) // Filter to only show items that are in topMeal
+                                )
+                                .map((menu, index) => {
+                                    const orderItem = order.find(item => item._id === menu._id);
+                                    const quantity = orderItem ? orderItem.quantity : 0;
+
+                                    return (
+                                        <div key={index} className="menu-item">
+                                            <div className="menu-item-header">
+                                                <Icon icon="mdi:tag-heart" className="menu-item-icon" />
+                                                <span className="menu-item-badge">Best Sellers</span>
+                                            </div>
+                                            <img 
+                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                                alt={menu.Food_Name} 
+                                                className="menu-item-image" 
+                                                onError={(e) => e.currentTarget.src = test}
+                                            />
+                                            <div className="menu-desc">
+                                                <h4 className="menu-item-title">{menu.Food_Name}</h4>
+                                                <div className="menu-item-content">
+                                                    <p className="menu-item-price">₱ {menu.Food_Price.toFixed(2)}</p>
+                                                    <div className="menu-item-footer">
+                                                        {quantity > 0 && (
+                                                            <button
+                                                                className="menu-item-minus"
+                                                                onClick={() => {
+                                                                    const existingOrderIndex = order.findIndex(item => item._id === menu._id);
+                                                                    if (existingOrderIndex !== -1) {
+                                                                        const updatedOrder = [...order];
+                                                                        if (updatedOrder[existingOrderIndex].quantity > 1) {
+                                                                            updatedOrder[existingOrderIndex].quantity -= 1;
+                                                                        } else {
+                                                                            updatedOrder.splice(existingOrderIndex, 1);
+                                                                        }
+                                                                        setOrder(updatedOrder);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {quantity > 0 && <span className="menu-item-quantity">{quantity}</span>}
+                                                        <button
+                                                            className="menu-item-add"
+                                                            onClick={() => addOrder(menu._id)}
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    </div>
                     {/* Savers Section */}
                     <div id="savers" className="menu-section">
                         <h3 className="menu-section-header">Savers</h3>
                         <div className="menu-items">
-                            {menus.map((menu, index) => {
-                                const orderItem = order.find(item => item._id === menu._id); 
-                                const quantity = orderItem ? orderItem.quantity : 0; 
+                            {menus
+                                .sort((a, b) => a.Food_Price - b.Food_Price) 
+                                .slice(0, 2) 
+                                .map((menu, index) => {
+                                    const orderItem = order.find(item => item._id === menu._id);
+                                    const quantity = orderItem ? orderItem.quantity : 0;
 
-                                return (
-                                    <div key={index} className="menu-item">
-                                        <div className="menu-item-header">
-                                            <Icon icon="mdi:tag-heart" className="menu-item-icon" />
-                                            <span className="menu-item-badge">Savers</span>
-                                        </div>
-                                        <img 
-                                        src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                        alt={menu.Food_Name} 
-                                        className="menu-item-image" 
-                                        onError={(e) => e.currentTarget.src = test}
-                                        />
-                                        <div className="menu-desc">
-                                            <h4 className="menu-item-title">{menu.Food_Name}</h4>
-                                            <div className="menu-item-content">
-                                                <p className="menu-item-price">₱ {menu.Food_Price.toFixed(2)}</p>
-                                                <div className="menu-item-footer">
-                                                    {quantity > 0 && (
-                                                        <button
-                                                            className="menu-item-minus"
-                                                            onClick={() => {
-                                                                const existingOrderIndex = order.findIndex(item => item._id === menu._id);
-                                                                if (existingOrderIndex !== -1) {
-                                                                    const updatedOrder = [...order];
-                                                                    if (updatedOrder[existingOrderIndex].quantity > 1) {
-                                                                        updatedOrder[existingOrderIndex].quantity -= 1;
-                                                                    } else {
-                                                                        updatedOrder.splice(existingOrderIndex, 1);
+                                    return (
+                                        <div key={index} className="menu-item">
+                                            <div className="menu-item-header">
+                                                <Icon icon="mdi:tag-heart" className="menu-item-icon" />
+                                                <span className="menu-item-badge">Savers</span>
+                                            </div>
+                                            <img 
+                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                                alt={menu.Food_Name} 
+                                                className="menu-item-image" 
+                                                onError={(e) => e.currentTarget.src = test}
+                                            />
+                                            <div className="menu-desc">
+                                                <h4 className="menu-item-title">{menu.Food_Name}</h4>
+                                                <div className="menu-item-content">
+                                                    <p className="menu-item-price">₱ {menu.Food_Price.toFixed(2)}</p>
+                                                    <div className="menu-item-footer">
+                                                        {quantity > 0 && (
+                                                            <button
+                                                                className="menu-item-minus"
+                                                                onClick={() => {
+                                                                    const existingOrderIndex = order.findIndex(item => item._id === menu._id);
+                                                                    if (existingOrderIndex !== -1) {
+                                                                        const updatedOrder = [...order];
+                                                                        if (updatedOrder[existingOrderIndex].quantity > 1) {
+                                                                            updatedOrder[existingOrderIndex].quantity -= 1;
+                                                                        } else {
+                                                                            updatedOrder.splice(existingOrderIndex, 1);
+                                                                        }
+                                                                        setOrder(updatedOrder);
                                                                     }
-                                                                    setOrder(updatedOrder);
-                                                                }
-                                                            }}
+                                                                }}
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {quantity > 0 && <span className="menu-item-quantity">{quantity}</span>}
+                                                        <button
+                                                            className="menu-item-add"
+                                                            onClick={() => addOrder(menu._id)}
                                                         >
-                                                            -
+                                                            +
                                                         </button>
-                                                    )}
-                                                    {quantity > 0 && <span className="menu-item-quantity">{quantity}</span>}
-                                                    <button
-                                                        className="menu-item-add"
-                                                        onClick={() => addOrder(menu._id)}
-                                                    >
-                                                        +
-                                                    </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
                         </div>
                     </div>
                     {/* Rice Meal Section */}

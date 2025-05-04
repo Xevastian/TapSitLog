@@ -79,7 +79,7 @@ router.delete("/deleteOrder/:OrderID", async (req, res) => {
 router.get("/completed", async (req, res) => {
     try {
         const completedOrders = await Order.find({
-            Status: { $in: ["paid", "serve"] }
+            Status: { $in: ["paid", "served"] }
         }).populate('TableID');
         res.status(200).json(completedOrders);
     } catch (error) {
@@ -90,7 +90,7 @@ router.get("/completed", async (req, res) => {
 router.get("/pending", async (req, res) => {
     try {
         const pendingOrders = await Order.find({
-            Status: { $nin: ["paid", "serve"] }
+            Status: { $nin: ["paid", "served"] }
         }).populate('TableID');
         res.status(200).json(pendingOrders);
     } catch (error) {
