@@ -62,7 +62,6 @@ router.put("/updateOrder/:OrderID", async (req, res) => {
     }
 });
 
-// Delete an order
 router.delete("/deleteOrder/:OrderID", async (req, res) => {
     const { OrderID } = req.params;
     try {
@@ -90,11 +89,41 @@ router.get("/completed", async (req, res) => {
 router.get("/pending", async (req, res) => {
     try {
         const pendingOrders = await Order.find({
-            Status: { $nin: ["paid", "served"] }
+            Status: { $ne: "served" }
         }).populate('TableID');
         res.status(200).json(pendingOrders);
     } catch (error) {
         res.status(500).json({ message: "Error fetching pending orders", error });
+    }
+});
+
+router.get("/top-selling", async (req, res) => {
+    try {
+        const orders = await Order.find();
+
+        const salesMap = {};
+
+        orders.forEach(order => {
+            order.Content.forEach(item => {
+                const name = item.Food_Name;
+                const qty = item.quantity;
+
+                if (salesMap[name]) {
+                    salesMap[name] += qty;
+                } else {
+                    salesMap[name] = qty;
+                }
+            });
+        });
+
+        const topItems = Object.entries(salesMap)
+            .sort((a, b) => b[1] - a[1]) 
+            .slice(0, 3)                 
+            .map(([Food_Name, quantity]) => ({ Food_Name, quantity }));
+
+        res.status(200).json(topItems);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching top selling items", error });
     }
 });
 
