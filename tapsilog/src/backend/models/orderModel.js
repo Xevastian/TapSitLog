@@ -43,7 +43,7 @@ const orderModel = new mongoose.Schema({
     CustomerNumber: {
         type: Number,
         required: false,
-    },
+    },  
 });
 
 const Order = mongoose.model('orders', orderModel,);

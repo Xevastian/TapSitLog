@@ -14,7 +14,7 @@ export default function OTCPayementPage() {
     const formattedDate = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
     const fetchOrder = async () => {
         try{
-            const response = await axios.get(`http://${ipv4}:5000/order/getCurOrder/${orderID}`);
+            const response = await axios.get(`http://${ipv4}:5000/order/getOrder/${orderID}`);
             setOrder(response.data.Content);
         }catch(e){
             console.error("Error fetching menu:", e);
@@ -26,7 +26,7 @@ export default function OTCPayementPage() {
     };
     useEffect(() => {
             fetchOrder();
-    }, [fetchOrder]);
+    }, []);
 
     return (
         <div className="receipt">

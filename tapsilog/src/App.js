@@ -5,7 +5,6 @@ import LandingPage from './pages/adminPages/landingPage.js';
 import GenerateQrPage from './pages/adminPages/menuPages/generateQrPage.js';
 import SaleSummaryPage from './pages/adminPages/menuPages/PendingOrderPage.js';
 import CounterPage from './pages/adminPages/menuPages/counterPage.js';
-import SetupOrdersPage from './pages/adminPages/menuPages/setupOrdersPage.js';
 import OrderPage from './pages/userPages/orderPage.js';
 import CartPage from './pages/userPages/cartPage.js';
 import PayementPage from './pages/userPages/payementPage.js';
@@ -30,7 +29,6 @@ function App() {
       <Route path='/:id/order/:orderID/payment/rcpt' element={<Receipt/>}/>
       <Route path='/:id/order/:orderID/payment/otc' element={<OTCPayementPage/>}/>
       <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} />
-      <Route path='/menu/setup' element={<PrivateRoute><SetupOrdersPage /></PrivateRoute>} />
       <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
       <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
       <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />

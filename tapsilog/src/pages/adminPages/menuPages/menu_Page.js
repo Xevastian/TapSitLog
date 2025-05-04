@@ -120,7 +120,6 @@ export default function Menu_Page() {
                     <div className="col">Food Name</div>
                     <div className="col">Price</div>
                     <div className="col">Category</div>
-                    <div className="col">Ratings</div>
                 </div>
                 {menu.map((item) => (
                     <div key={item._id} className="menu-row">

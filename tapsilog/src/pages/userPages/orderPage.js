@@ -7,7 +7,6 @@ import test from './test.png'
 import { ipv4 } from "../../ipv4.js";
 
 export default function OrderPage() {
-
     const { id } = useParams();
     const navigate = useNavigate();
     const [menus, setMenu] = useState([]);
@@ -131,7 +130,12 @@ export default function OrderPage() {
                                             <Icon icon="mdi:tag-heart" className="menu-item-icon" />
                                             <span className="menu-item-badge">Savers</span>
                                         </div>
-                                        <img src={menu.image || test} alt={menu.Food_Name} className="menu-item-image" />
+                                        <img 
+                                        src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                        alt={menu.Food_Name} 
+                                        className="menu-item-image" 
+                                        onError={(e) => e.currentTarget.src = test}
+                                        />
                                         <div className="menu-desc">
                                             <h4 className="menu-item-title">{menu.Food_Name}</h4>
                                             <div className="menu-item-content">
@@ -187,7 +191,12 @@ export default function OrderPage() {
                                                 <Icon icon="bxs:bowl-rice" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Rice Meal</span>
                                             </div>
-                                            <img src={menu.image || test} alt={menu.Food_Name} className="menu-item-image" />
+                                            <img 
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                            alt={menu.Food_Name} 
+                                            className="menu-item-image" 
+                                            onError={(e) => e.currentTarget.src = test}
+                                            />
                                             <div className="menu-desc">
                                                 <h4 className="menu-item-title">{menu.Food_Name}</h4>
                                                 <div className="menu-item-content">
@@ -244,7 +253,13 @@ export default function OrderPage() {
                                                 <Icon icon="ri:drinks-2-fill" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Drinks</span>
                                             </div>
-                                            <img src={menu.image || test} alt={menu.Food_Name} className="menu-item-image" />
+                                            <img 
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                            
+                                            alt={menu.Food_Name} 
+                                            className="menu-item-image" 
+                                            onError={(e) => e.currentTarget.src = test}
+                                            />
                                             <div className="menu-desc">
                                                 <h4 className="menu-item-title">{menu.Food_Name}</h4>
                                                 <div className="menu-item-content">
@@ -301,7 +316,12 @@ export default function OrderPage() {
                                                 <Icon icon="mdi:food-apple" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Snacks</span>
                                             </div>
-                                            <img src={menu.image || test} alt={menu.Food_Name} className="menu-item-image" />
+                                            <img 
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
+                                            alt={menu.Food_Name} 
+                                            className="menu-item-image" 
+                                            onError={(e) => e.currentTarget.src = test}
+                                            />
                                             <div className="menu-desc">
                                                 <h4 className="menu-item-title">{menu.Food_Name}</h4>
                                                 <div className="menu-item-content">

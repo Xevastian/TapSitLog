@@ -13,7 +13,7 @@ export default function CartPage() {
 
     const fetchOrder = async () => {
         try{
-            const response = await axios.get(`http://${ipv4}:5000/order/getCurOrder/${orderID}`);
+            const response = await axios.get(`http://${ipv4}:5000/order/getOrder/${orderID}`);
             setOrder(response.data.Content);
         }catch(e){
             console.error("Error fetching menu:", e);
@@ -23,7 +23,7 @@ export default function CartPage() {
 
     useEffect(() => {
         fetchOrder();
-    }, [fetchOrder]);
+    }, []);
 
     const updateQuantity = async (foodID, delta) => {
         const updatedOrder = order

@@ -11,7 +11,15 @@ export default function PendingOrderPage() {
     const fetchOrders = async () => {
         try {
             const response = await axios.get("http://localhost:5000/order/getOrder");
-            setPendingOrders(response.data.filter(order => order.Status === "unpaid" || order.Status === "pending"));
+            const sortedOrders = response.data
+            .filter(order => order.Status === "served" || order.Status === "paid")
+            .sort((a, b) => {
+                // Priority: "paid" comes before "served and based on when they were ordered"
+                if (a.Status === "paid" && b.Status !== "paid") return -1;
+                if (a.Status !== "paid" && b.Status === "paid") return 1;
+                    return new Date(a.OrderedAt) - new Date(b.OrderedAt);
+                });
+            setPendingOrders(sortedOrders);
         } catch (e) {
             console.error("Error fetching orders:", e);
             alert("Failed to fetch orders.");
@@ -28,11 +36,7 @@ export default function PendingOrderPage() {
 
             await axios.put(`http://localhost:5000/order/updateOrder/${orderId}`, updatedOrder);
 
-            setPendingOrders(prev =>
-                prev.map(order =>
-                    order._id === orderId ? { ...order, Status: newStatus } : order
-                )
-            );
+            fetchOrders();
         } catch (error) {
             console.error("Error updating status:", error);
             alert("Failed to update order status.");
@@ -43,7 +47,7 @@ export default function PendingOrderPage() {
         <div>
             <h1>Pending Order Page</h1>
             {pendingOrders.length === 0 ? (
-                <p>No pending orders.</p>
+                <p>No orders.</p>
             ) : (
                 <ul>
                     {pendingOrders.map((order) => (
@@ -55,10 +59,8 @@ export default function PendingOrderPage() {
                                     value={order.Status}
                                     onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                 >
-                                    <option value="unpaid">Unpaid</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="paid">Paid</option>
-                                    <option value="serve">Serve</option>
+                                    <option value="paid">Pending</option>
+                                    <option value="served">Served</option>
                                 </select>
                             </label>
                             <ul>

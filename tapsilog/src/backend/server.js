@@ -6,10 +6,14 @@ import authRoutes from "./routes/auth.routes.js";
 import menuRoutes from "./routes/menu.routes.js"; 
 import orderRoutes from "./routes/order.routes.js";
 import tableRoutes from "./routes/table.routes.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cors()); 
 
@@ -24,6 +28,7 @@ app.use("/", authRoutes);
 app.use("/menu", menuRoutes);
 app.use("/order", orderRoutes); 
 app.use("/table", tableRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); 
 
 app.get("/", (req, res) => {
   res.send("MongoDB is connected and server is running!");

@@ -18,16 +18,12 @@ export default function MenuPage() {
                 <h1>Menu Page</h1> 
             </div>
 
-            <button onClick={() => nav('setup')}>
-                Setup Orders
-            </button>
-
             <button onClick={() => nav('counter')}>
                 Counter
             </button>
 
             <button onClick={() => nav('pending-orders')}>
-                Pending Orders
+                Orders
             </button>
 
             <button onClick={() => nav('generate-qr')}>
@@ -44,10 +40,6 @@ export default function MenuPage() {
 
             <button onClick={() => nav('inventory')}>
                 Inventory
-            </button>
-
-            <button onClick={() => nav('sales')}>
-                Sales
             </button>
                     
             <button onClick={handleLogout}>

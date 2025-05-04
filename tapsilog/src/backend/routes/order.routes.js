@@ -18,6 +18,7 @@ router.post("/addOrder", async (req, res) => {
         console.log("New order created:", newOrder);
     } catch (error) {
         res.status(500).json({ message: "Error creating order", error });
+        console.error("Error creating order:", error);
     }
 });
 

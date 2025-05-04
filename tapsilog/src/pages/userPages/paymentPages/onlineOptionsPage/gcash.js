@@ -12,7 +12,7 @@ export default function GCash() {
     
     const getTotal = async () => {
         try {
-            const response = await axios.get(`http://${ipv4}:5000/order/getCurOrder/${orderID}`);
+            const response = await axios.get(`http://${ipv4}:5000/order/getOrder/${orderID}`);
 
             if (response.status === 200) {
                 setTotal(response.data.Total);
