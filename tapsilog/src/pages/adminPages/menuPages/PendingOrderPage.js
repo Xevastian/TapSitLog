@@ -100,17 +100,38 @@ export default function PendingOrderPage() {
         },
         itemRow: {
             display: 'flex',
-            justifyContent: 'space-between',
-            padding: '4px 0',
+            alignItems: 'center',
+            padding: '8px 0',
             borderBottom: '1px solid #eee',
-            fontSize: '1rem'
+            fontSize: '1rem',
+            justifyContent: 'space-between'
+        },
+        itemQuantity: {
+            marginRight: '12px',
+            flex: '0 0 40px'
+        },
+        itemDetails: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            flex: 1
+        },
+        itemName: {
+            flex: 1
+        },
+        itemPrice: {
+            color: '#2e2e2e',
+            flex: '0 0 50px',
+            textAlign: 'right'
+        },
+        total: {
+            fontWeight: 'bold'
         }
     };
 
     return (
         <div style={styles.pageContainer}>
             <div style={styles.pageHeader}>
-                <span>🛒</span> Orders
+                <span>🛒</span> Order Page
             </div>
             {orders.length === 0 ? (
                 <p>No orders.</p>
@@ -136,18 +157,21 @@ export default function PendingOrderPage() {
                             <ul style={{ padding: 0, margin: '12px 0' }}>
                                 {order.Content.map((item, index) => (
                                     <li key={index} style={styles.itemRow}>
-                                        <span>{item.Food_Name}</span>
-                                        <span>{item.quantity}</span>
+                                        <div style={styles.itemQuantity}>{item.quantity}</div>
+                                        <div style={styles.itemDetails}>
+                                            <span style={styles.itemName}>{item.Food_Name}</span>
+                                            <span style={styles.itemPrice}>P{item.Food_Price}</span>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
-                            <p>Total: {order.Total}</p>
+                            <p style={styles.total}>Total: {order.Total}</p>
                         </li>
                     ))}
                 </ul>
             )}
             <button style={styles.backButton} onClick={() => window.history.back()}>
-                Go Back
+                Back
             </button>
         </div>
     );
