@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import '../../../styles/dashboardPage.css';
 
 export default function DashboardPage() {
     const [completedCount, setCompletedCount] = useState(0);
@@ -38,20 +39,20 @@ export default function DashboardPage() {
     return (
         <div className="dashboard-container">
             <h1>Dashboard Summary</h1>
-            <div className="summary-cards" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <div className="card" style={cardStyle}>
+            <div className="summary-cards">
+                <div className="card">
                     <h2>Completed Orders</h2>
                     <p>{completedCount}</p>
                 </div>
-                <div className="card" style={cardStyle}>
+                <div className="card">
                     <h2>Pending Orders</h2>
                     <p>{pendingCount}</p>
                 </div>
-                <div className="card" style={cardStyle}>
+                <div className="card">
                     <h2>Total Sales</h2>
                     <p>₱{totalSales}</p>
                 </div>
-                <div className="card" style={cardStyle}>
+                <div className="card">
                     <h2>Top 3 Best-Selling Items</h2>
                     {topItems.length === 0 ? (
                         <p>No data.</p>
@@ -67,7 +68,7 @@ export default function DashboardPage() {
                 </div>
             </div>
         </div>
-    );
+    );    
 }
 
 const cardStyle = {

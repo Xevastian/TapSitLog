@@ -1,4 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
+import TopNavBar from './topNavBar.js';
+import '../../styles/menuPage.css';
+import '../../styles/index.css';
 
 export default function MenuPage() {
     const navigate = useNavigate();
@@ -14,37 +17,37 @@ export default function MenuPage() {
 
     return (
         <>
-            <div>
-                <h1>Menu Page</h1> 
+            <TopNavBar />
+            <div className="layout">
+                <aside className="sidebar">
+                    <div className="profile">
+                            <i className="fas fa-user-circle"></i> 
+                            <p>'Username'</p> {/* Palagay Backend Thanks*/}
+                        </div>
+                    <button onClick={() => nav('dashboard')}>
+                        <i className="fas fa-tachometer-alt"></i> Dashboard
+                    </button>
+                    <button onClick={() => nav('counter')}>
+                        <i className="fas fa-solid fa-tv"></i> Counter
+                    </button>
+                    <button onClick={() => nav('generate-qr')}>
+                        <i className="fas fa-qrcode"></i> Generate QR
+                    </button>
+                    <button onClick={() => nav('pending-orders')}>
+                        <i className="fas fa-box"></i> Orders
+                    </button> 
+                    <button onClick={() => nav('menu_page')}>
+                        <i className="fas fa-solid fa-mug-saucer"></i> Menu
+                    </button>
+                    <button onClick={handleLogout}>
+                        <i className="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </aside>
+
+                <main className="main-content">
+                    <Outlet /> {/*route content*/}
+                </main>
             </div>
-
-            <button onClick={() => nav('counter')}>
-                Counter
-            </button>
-
-            <button onClick={() => nav('pending-orders')}>
-                Orders
-            </button>
-
-            <button onClick={() => nav('generate-qr')}>
-                Generate QR
-            </button>
-
-            <button onClick={() => nav('dashboard')}>
-                Dashboard
-            </button>
-
-            <button onClick={() => nav('menu_page')}>
-                Menu
-            </button>
-
-            <button onClick={() => nav('inventory')}>
-                Inventory
-            </button>
-                    
-            <button onClick={handleLogout}>
-                Logout
-            </button>
         </>
     );
 }

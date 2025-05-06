@@ -1,0 +1,67 @@
+.layout {
+    display: flex;
+    height: 100vh;
+    margin-top: 4.5rem;
+}
+
+.sidebar {
+    width: 200px;
+    background-color:  var(--tertiary-3);
+    color: var(--primary-white);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    font-family: var(--font-family);
+    position: relative;
+}
+
+.sidebar .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem;
+}
+
+.sidebar .profile i {
+    font-size: 4rem;
+}
+
+.sidebar .profile p {
+    font-size: 1.5rem;
+    color: var(--primary-white);
+    text-align: center;
+}
+
+.sidebar button {
+    display: flex;
+    align-items: center;
+    gap:10px;
+    background: none;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: var(--font-family);
+    border-radius: 10px;
+}
+
+.sidebar button i {
+    margin-right: 8px;
+}
+
+.sidebar button:hover {
+    background-color: var(--tertiary-4)
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: var(--secondary-white);
+    font-family: var(--font-family);
+}

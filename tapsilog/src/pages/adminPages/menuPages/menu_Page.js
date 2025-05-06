@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import '../../../styles/menu_Page.css';
 
 export default function Menu_Page() {
     const [menu, setMenu] = useState([]);
@@ -166,130 +167,6 @@ export default function Menu_Page() {
             ) : (
                 <button className="add-button" onClick={() => setIsAdding(true)}>+ Add</button>
             )}
-
-            <style jsx>{`
-                .menu-container {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    padding: 2rem;
-                    font-family: Arial, sans-serif;
-                }
-                .menu-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .menu-actions button {
-                    margin-left: 10px;
-                    padding: 0.4rem 0.8rem;
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 6px;
-                    cursor: pointer;
-                }
-                .sort-options {
-                    display: flex;
-                    gap: 0.5rem;
-                    margin: 10px 0;
-                }
-                .sort-options button {
-                    background: #6c757d;
-                    color: white;
-                    border: none;
-                    padding: 6px 12px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                .menu-table {
-                    border: 1px solid #ddd;
-                    border-radius: 10px;
-                    margin-top: 1rem;
-                    overflow: hidden;
-                }
-                .menu-table-header, .menu-row {
-                    display: grid;
-                    grid-template-columns: 2fr 1fr 1.5fr 2fr;
-                    padding: 0.75rem 1rem;
-                    border-bottom: 1px solid #eee;
-                    align-items: center;
-                }
-                .menu-table-header {
-                    background-color: #f5f5f5;
-                    font-weight: bold;
-                }
-                .menu-row:nth-child(even) {
-                    background: #fafafa;
-                }
-                .menu-row input {
-                    width: 90%;
-                    padding: 0.3rem;
-                    border-radius: 5px;
-                    border: 1px solid #ccc;
-                }
-                .star-rating {
-                    color: #f39c12;
-                }
-                .edit-actions {
-                    margin-top: 5px;
-                    display: flex;
-                    gap: 6px;
-                }
-                .edit-actions button {
-                    padding: 3px 6px;
-                    border-radius: 4px;
-                    border: none;
-                    cursor: pointer;
-                }
-                .edit-actions button:first-child {
-                    background: #28a745;
-                    color: white;
-                }
-                .edit-actions button:last-child {
-                    background: #ccc;
-                }
-                .add-button {
-                    margin-top: 1rem;
-                    background: none;
-                    color: #007bff;
-                    font-weight: bold;
-                    border: none;
-                    cursor: pointer;
-                }
-                .add-item-form {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                    margin-top: 1rem;
-                    background: #f8f9fa;
-                    padding: 1rem;
-                    border-radius: 10px;
-                }
-                .add-item-form input {
-                    padding: 0.5rem;
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    min-width: 200px;
-                }
-                .form-buttons {
-                    display: flex;
-                    gap: 10px;
-                    width: 100%;
-                }
-                .form-buttons button {
-                    padding: 0.5rem 1rem;
-                    border: none;
-                    border-radius: 6px;
-                    cursor: pointer;
-                }
-                .form-buttons button:first-child {
-                    background: #28a745;
-                    color: white;
-                }
-                .form-buttons button:last-child {
-                    background: #ccc;
-                }
-            `}</style>
         </div>
     );
 }

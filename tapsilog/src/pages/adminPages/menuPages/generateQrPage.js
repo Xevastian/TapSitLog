@@ -2,7 +2,8 @@ import { QRCode } from 'react-qr-code';
 import { useState } from 'react';
 import axios from 'axios';
 import { ipv4 } from '../../../ipv4.js';
-export default function GenerateQrPage() {   
+import '../../../styles/qrPage.css';
+export default function GenerateQrPage() {  
     const [url, setUrl] = useState('');
     const getURL = async () => {
         const tableNumber = document.getElementById('Table-Input').value;
@@ -23,8 +24,11 @@ export default function GenerateQrPage() {
             console.error("Error generating QR code:", e);
             alert("Failed to generate QR code. Please try again.");
         }
-        
+       
     }
+
+
+
 
 
 
@@ -36,8 +40,23 @@ export default function GenerateQrPage() {
         document.body.innerHTML = page;
     };
 
+
+    const handleBack = () => {
+        window.history.back();
+    };
+
+
     return (
-        <div>
+        <div className="qr-page">
+            <button
+                    className="navigate"
+                    onClick={handleBack}
+                    type="button"
+                >
+                Back
+            </button>
+
+
             <h1>Generate QR Page</h1>
             <input type="number" placeholder="Enter Table Number" id="Table-Input"/>
             <button onClick={getURL}>
@@ -46,7 +65,7 @@ export default function GenerateQrPage() {
             {url === ''? null :
                 <>
                     <div id='QR-Code'>
-                    <QRCode 
+                    <QRCode
                     size={200}
                     bgColor="white"
                     fgColor="black"
@@ -54,7 +73,11 @@ export default function GenerateQrPage() {
                     </div>
                     <button onClick={printQR}> Print QR </button>
                 </>
+           
+
+
             }
         </div>
     )
 }
+

@@ -11,7 +11,6 @@ import PayementPage from './pages/userPages/payementPage.js';
 import PrivateRoute from './components/PrivateRoute.js';
 import DashboardPage from './pages/adminPages/menuPages/dashboardPage.js';
 import Menu from './pages/adminPages/menuPages/menu_Page.js';
-import InventoryPage from './pages/adminPages/menuPages/inventoryPage.js';
 import OTCPayementPage from './pages/userPages/paymentPages/OTCPayementPage.js';
 import Gcash from './pages/userPages/paymentPages/onlineOptionsPage/gcash.js';
 import Bank from './pages/userPages/paymentPages/onlineOptionsPage/onlineBank.js';
@@ -28,13 +27,17 @@ function App() {
       <Route path='/:id/order/:orderID/payment/crdt' element={<Bank/>}/>
       <Route path='/:id/order/:orderID/payment/rcpt' element={<Receipt/>}/>
       <Route path='/:id/order/:orderID/payment/otc' element={<OTCPayementPage/>}/>
-      <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} />
-      <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
-      <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
-      <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
-      <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
-      <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
-      <Route path='/menu/inventory' element={<PrivateRoute><InventoryPage /></PrivateRoute>} /> 
+      
+      <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} >
+        
+        <Route index element={<DashboardPage />} /> 
+
+        <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
+        <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
+        <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
+        <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
+        <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
+      </Route>
     </Routes>
   );
 }
