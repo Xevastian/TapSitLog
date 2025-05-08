@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../../../styles/counterPage.css';
 
 export default function CounterPage() {
     const [menus, setMenu] = useState([]);
     const [order, setOrder] = useState([]);
     const [customer, setCustomer] = useState(-1);
     const [customerNumberDialog, setCustomerNumberDialog] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("Rice Meal"); // Default category
 
     const addOrder = (foodID) => {
         const food = menus.find(item => item._id === foodID);
@@ -81,44 +83,96 @@ export default function CounterPage() {
     };
 
     return (
-        <div>
-            <h1>Counter Page</h1>
-            {menus.map((menu) => (
-                <div key={menu._id}>
-                    <h2>{menu.Food_Name}</h2>
-                    <p>Price: ${menu.Food_Price.toFixed(2)}</p>
-                    <button onClick={() => addOrder(menu._id)}>Add to Order</button>
+            <main className="route-container">
+
+                {/* HEADER */}
+                <div className="route-header">
+                    <span className="route-date">April 29, 2025</span>
+                    <h1>Counter Panel</h1>
                 </div>
-            ))}
-            {order.length > 0 && (
-                <div>
-                    <h2>Order Summary</h2>
-                    {order.map((item) => (
-                        <div key={item.FoodID}>
-                            <p>{item.Food_Name}: {item.quantity} x ${item.Food_Price.toFixed(2)}</p>
-                            <button onClick={() => removeOrder(item._id)}> - </button>
+
+                {/* CONTENT SECTIONS */}
+                <div className="counter route-content">
+
+                    {/* TOP ROW: Category and Menu Items */}
+                    <div className="top-row">
+                        {/* Category Selection */}
+                        <div className="category-column">
+                            <h3>Categories</h3>
+                            <div className="category-list">
+                                {["Rice Meal", "Soup", "Snack", "Beverage"].map((cat) => (
+                                    <button 
+                                        key={cat}
+                                        className={selectedCategory === cat ? "active" : ""}
+                                        onClick={() => setSelectedCategory(cat)}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                    ))}
-                    <h3>Total: ${calculateTotal()}</h3>
-                    <button onClick={() => submitOrder()}>Submit Order</button>
+
+                        {/* Menu Items */}
+                        <div className="menu-column">
+                            <h3>Menu Items</h3>
+                            <div className="menu-items">
+                            {menus
+                                .filter(menu => menu.Food_Category === selectedCategory)
+                                .map(menu => (
+                                    <div className="menu-item" key={menu._id}>
+                                        <span>{menu.Food_Name}</span>
+                                        <span>₱{menu.Food_Price.toFixed(2)}</span>
+                                        <button className="add-button" onClick={() => addOrder(menu._id)}>+ Add</button>
+                                    </div>
+                            ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* BOTTOM ROW: Order & Checkout */}
+                    <div className="bottom-row">
+                        {order.length > 0 && (
+                            <div className="checkout-box">
+                                <h2>Order & Checkout</h2>
+                                {order.map(item => (
+                                    <div className="checkout-item" key={item._id}>
+                                        <span>{item.Food_Name}</span>
+                                        <span>₱{item.Food_Price.toFixed(2)}</span>
+                                        <div className="quantity-box">
+                                            <button className="decrease-btn" onClick={() => removeOrder(item._id)}>-</button>
+                                            <span>{item.quantity}</span>
+                                            <button className="increase-btn" onClick={() => addOrder(item._id)}>+</button>
+                                        </div>
+                                        <i className="fa-solid fa-trash delete-btn" onClick={() => removeOrder(item._id)}></i>
+                                    </div>
+                                ))}
+                                <div className="checkout-row">
+                                    <h3>Total Price:    ₱{calculateTotal()}</h3>
+                                    <button className="checkout-btn" onClick={submitOrder}>Checkout</button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                {/* CUSTOMER NUMBER DIALOG */}
+                {customerNumberDialog && (
+                    <div className="customer-number-dialog">
+                        <h2>Enter Customer Number</h2>
+                        <input 
+                            type="number" 
+                            placeholder="Customer Number" 
+                            onChange={(e) => setCustomer(e.target.value)} 
+                        />
+                        <button onClick={() => {
+                            setCustomerNumberDialog(false);
+                            submitOrder();
+                        }}>
+                            Submit
+                        </button>
+                        <button className="back-btn" onClick={() => setCustomerNumberDialog(false)}>Back</button>
+                    </div>
+                )}
                 </div>
-            )}
-            {customerNumberDialog && (
-                <div className="customer-number-dialog">
-                    <h2>Enter Customer Number</h2>
-                    <input 
-                        type="number" 
-                        placeholder="Customer Number" 
-                        onChange={(e) => setCustomer(e.target.value)} 
-                    />
-                    <button onClick={() => {
-                        setCustomerNumberDialog(false);
-                        submitOrder(); // Call submitOrder after closing the dialog
-                    }}>
-                        Submit
-                    </button>
-                </div>
-            )}
-        </div>
+            </main>
     );
-}
+}    

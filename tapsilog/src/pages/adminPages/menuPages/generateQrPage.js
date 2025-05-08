@@ -27,11 +27,6 @@ export default function GenerateQrPage() {
        
     }
 
-
-
-
-
-
     const printQR = () =>{
         const qr = document.getElementById('QR-Code').innerHTML;
         const page = document.body.innerHTML;
@@ -47,7 +42,16 @@ export default function GenerateQrPage() {
 
 
     return (
-        <div className="qr-page">
+        <main className="route-container">
+
+                {/* HEADER */}
+                <div className="route-header">
+                    <span className="route-date">April 29, 2025</span>
+                    <h1>Generate QR Code</h1>
+                </div>
+
+                {/* CONTENT SECTIONS */}
+                <div className="qr-page route-content">
             <button
                     className="navigate"
                     onClick={handleBack}
@@ -56,8 +60,6 @@ export default function GenerateQrPage() {
                 Back
             </button>
 
-
-            <h1>Generate QR Page</h1>
             <input type="number" placeholder="Enter Table Number" id="Table-Input"/>
             <button onClick={getURL}>
                 Generate QR
@@ -73,11 +75,9 @@ export default function GenerateQrPage() {
                     </div>
                     <button onClick={printQR}> Print QR </button>
                 </>
-           
-
-
             }
         </div>
+        </main>
     )
 }
 

@@ -1,0 +1,236 @@
+
+/* Top Row: Category + Menu */
+.counter .top-row {
+    display: flex;
+    gap: 2rem;
+    font-weight: 600;
+}
+
+/* Category Section */
+.counter .category-column {
+    flex: 1;
+}
+
+.counter .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.counter .category-list button {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border: none;
+    background-color: var(--secondary-white2);
+    cursor: pointer;
+    border-radius: 15px;
+    width: 100%; 
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.counter .category-list button.active {
+    background-color: var(--tertiary-4);
+    color: white;
+}
+
+.counter .menu-column {
+    flex: 3;
+}
+.counter .menu-items {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.counter .menu-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    border: 1px solid var(--primary-white);
+    padding: 0.5rem 1.2rem;
+    border-radius: 15px;
+
+    box-sizing: border-box;
+    width: 100%;
+
+    background-color: var(--tertiary-3);
+}
+
+.counter .menu-item span:first-child {
+    flex: 1; /* allows name to take up extra space */
+}
+
+.counter .menu-item span:nth-child(2) {
+    flex: 1; /* allows price to take up extra space */
+}
+
+.counter .add-button {
+    background-color: white;
+    margin: 0;
+    color: var(--tertiary-3); /* or your preferred text color */
+    border: 1px solid var(--tertiary-3);
+    border-radius: 10px;
+    padding: 0.2rem 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.counter .add-button:hover {
+    background-color: var(--tertiary-2);
+    color: white;
+}
+
+/* Bottom Row */
+.counter .bottom-row {
+    display: flex;
+}
+
+.counter .checkout-box {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.counter .checkout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.counter .checkout-item span:nth-child(1) {
+    flex: 1; /* allows price to take up extra space */
+}
+.counter .checkout-item span:nth-child(2) {
+    flex: 1; /* allows price to take up extra space */
+}
+
+.counter .quantity-box {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem; /* Adjust spacing between elements */
+}
+
+.counter .decrease-btn {
+    padding: 0.25rem 0.5rem;
+    background: #dfe6e9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.counter .increase-btn {
+    padding: 0.25rem 0.5rem;
+    background: #dfe6e9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter .quantity-box span {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.counter .quantity-box button:last-child {
+    margin-right: 9rem; /* Only applies to the '+' button */
+}
+
+.counter .delete-btn {
+    font-size: 1.5rem;
+    color: var(--tertiary-3); /* Sets the icon color to white */
+    cursor: pointer;
+    margin-left: 1rem; /* Optional: space between the trash icon and quantity box */
+}
+
+.counter .delete-btn:hover {
+    color: #e74c3c; /* Optional: change color on hover for better interaction */
+}
+
+.counter .checkout-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Optional: Adjust spacing between total price and checkout button */
+}
+
+.counter .checkout-btn {
+    padding: 0.5rem 3rem;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.counter .customer-number-dialog {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.counter .customer-number-dialog .back-btn {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+    background: var(--tertiary-3);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%; /* Ensure button takes full width */
+}
+
+.counter .customer-number-dialog .back-btn:hover {
+    color: #34495e;
+}
+.counter .customer-number-dialog input {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 92%;
+}
+
+.counter .customer-number-dialog button {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+    background: var(--tertiary-2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%; /* Ensure button takes full width */
+}
+
+.counter .customer-number-dialog button:hover {
+    background: var(--tertiary-3); /* Slightly darker shade for hover */
+}

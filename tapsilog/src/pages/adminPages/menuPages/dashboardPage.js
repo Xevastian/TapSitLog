@@ -37,8 +37,13 @@ export default function DashboardPage() {
     }, [fetchSummary]);
 
     return (
-        <div className="dashboard-container">
-            <h1>Dashboard Summary</h1>
+        <main className="route-container">
+            <div className="route-header">
+                    <span className="route-date">April 29, 2025</span>
+                    <h1>Dashboard Summary</h1>
+            </div>
+
+            <div className="route-content">
             <div className="summary-cards">
                 <div className="card">
                     <h2>Completed Orders</h2>
@@ -67,7 +72,8 @@ export default function DashboardPage() {
                     )}
                 </div>
             </div>
-        </div>
+            </div>
+        </main>
     );    
 }
 
