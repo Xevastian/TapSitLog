@@ -1,3 +1,8 @@
+.qr-page.route-content {
+    gap: 0;
+    min-width: 350px;
+}
+
 .qr-page {
     padding: 2rem;
     background-color: white;
@@ -6,56 +11,36 @@
     margin: 0 auto;
 }
 
-
-.qr-page-header {
-    background-color: #1B294E;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    margin: -2rem -2rem 2rem -2rem;
-}
-
-
-.qr-page-header h1 {
+.qr-page h2{
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 500;
 }
 
-
-.qr-page-header img {
-    margin-right: 1rem;
-    width: 24px;
-    height: 24px;
-}
-
-
-.qr-page-content {
+.qr-controls {
     display: flex;
     flex-direction: column;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
 }
 
+.qr-controls input,
+.qr-controls button,
+.qr-controls #QR-Code {
+    width: 100%;
+    max-width: 300px;
+}
 
 .qr-page input#Table-Input {
     display: block;
-    margin: 0 auto;
     padding: 0.75rem 1rem;
     width: 100%;
-    max-width: 350px;
     font-size: 1rem;
     border: 1px solid #D8E2EF;
     border-radius: 8px;
     background-color: white;
-    margin-bottom: 1.5rem;
+    text-align: center;
+    max-width: 270px;
 }
-
 
 .qr-page label {
     display: block;
@@ -65,10 +50,9 @@
     text-align: center;
 }
 
-
 .qr-page button {
     display: block;
-    margin: 1.5rem auto;
+    margin: 1.5 rem auto;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     background-color: #1B294E;
@@ -78,64 +62,48 @@
     cursor: pointer;
     transition: background-color 0.3s;
     font-weight: 500;
-    min-width: 150px;
 }
-
 
 .qr-page button:hover {
     background-color: #00ADB5;
 }
 
-
 .qr-page #QR-Code {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2rem auto;
+    margin: auto;
     padding: 2rem;
     background-color: white;
     border: 1px solid #EEEEEE;
     border-radius: 12px;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
-    max-width: 300px;
+    max-width: 240px;
 }
-
 
 .qr-page button:last-child {
     background-color: #00ADB5;
 }
 
-
 .qr-page button:last-child:hover {
     background-color: #008C94;
 }
 
-
 .navigate {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
     padding: 0.5rem 1.5rem;
     background-color: #EEEEEE;
     color: #222831;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-    z-index: 1000; /* ensures it stays on top */
 }
-
 
 .navigate:hover {
     background-color: rgba(255,255,255,0.1);
 }
-
 
 .navigate::before {
     content: "←";
     margin-right: 0.5rem;
     font-size: 1.2rem;
 }
-

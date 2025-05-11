@@ -100,14 +100,26 @@ export default function Menu_Page() {
     const renderStarRating = (rating) => rating ? <span className="star-rating">★ {rating.toFixed(1)}</span> : null;
 
     return (
-        <div className="menu-container">
-            <header className="menu-header">
-                <h1>Menu</h1>
-                <div className="menu-actions">
-                    <button onClick={() => setEditMode(!editMode)}>✏️ Edit</button>
-                    <button onClick={() => setShowSortOptions(!showSortOptions)}>Sort By</button>
+        <main className="route-container">
+
+                {/* HEADER */}
+                <div className="route-header">
+                    <span className="route-date">April 29, 2025</span>
+                    <h1>Menu Items</h1>
                 </div>
-            </header>
+
+                {/* CONTENT SECTIONS */}
+                <div className="menu-page route-content">
+                <div className="menu-actions">
+                <button className="edit-mode-btn" onClick={() => setEditMode(!editMode)}>
+                    <i className="fa-solid fa-pen-to-square" style={{ marginRight: '0.5rem' }}></i>
+                    Edit
+                </button>
+                <button onClick={() => setShowSortOptions(!showSortOptions)}>
+                    Sort By
+                    <i className="fa-solid fa-sort-down" style={{ marginLeft: '0.5rem' }}></i>
+                </button>
+                </div>
 
             {showSortOptions && (
                 <div className="sort-options">
@@ -143,9 +155,14 @@ export default function Menu_Page() {
                                 <div className="col">₱{item.Food_Price.toFixed(2)}</div>
                                 <div className="col">{item.Food_Category}</div>
                                 <div className="col">
-                                    {renderStarRating(item.rating)}
-                                    {editMode && <button onClick={() => handleEdit(item)}>Edit</button>}
-                                    {editMode && <button onClick={() => handleDelete(item._id)}>🗑️</button>}
+                                    {renderStarRating(item.rating)}</div>
+                                    <div className="col row-actions">
+                                    {editMode && (
+                                        <>
+                                            <i className="fa-solid fa-pen-to-square" onClick={() => handleEdit(item)} style={{ cursor: 'pointer', marginRight: '1rem' }}></i>
+                                            <i className="fa-solid fa-trash trash-icon" onClick={() => handleDelete(item._id)} style={{ cursor: 'pointer' }}></i>
+                                        </>
+                                    )}
                                 </div>
                             </>
                         )}
@@ -168,5 +185,6 @@ export default function Menu_Page() {
                 <button className="add-button" onClick={() => setIsAdding(true)}>+ Add</button>
             )}
         </div>
+        </main>
     );
 }

@@ -1,0 +1,113 @@
+.order-page.route-content {
+    gap: 0;
+}
+
+.status-filter-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.status-filter-button {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: #333;
+}
+
+.status-filter-button.active {
+    background-color: var(--tertiary-4);
+    color: white;
+    border-color: var(--tertiary-4);
+}
+
+.order-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+    padding: 1rem 2.5rem;
+}
+
+.order-id {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2e2e2e;
+}
+
+.status-select {
+    margin-top: 0;
+}
+
+.order-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.status-select select {
+    padding: 6px 12px;
+    font-size: 1rem;
+    margin-left: 8px;
+}
+
+/* Items */
+.item-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 1rem;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    justify-content: space-between;
+}
+
+.item-quantity {
+    margin-right: 12px;
+    flex: 0 0 40px;
+}
+
+.item-details {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.item-name {
+    flex: 1;
+}
+
+.item-price {
+    color: #2e2e2e;
+    flex: 0 0 50px;
+    text-align: right;
+}
+
+.total {
+    font-weight: bold;
+    margin: 0;
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.back-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #f2f2f2;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
