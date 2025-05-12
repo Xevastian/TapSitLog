@@ -43,33 +43,81 @@ export default function DashboardPage() {
                     <h1>Dashboard Summary</h1>
             </div>
 
-            <div className="route-content">
+            <div className="dashboard route-content">
             <div className="summary-cards">
-                <div className="card">
-                    <h2>Completed Orders</h2>
-                    <p>{completedCount}</p>
-                </div>
-                <div className="card">
-                    <h2>Pending Orders</h2>
-                    <p>{pendingCount}</p>
-                </div>
-                <div className="card">
-                    <h2>Total Sales</h2>
-                    <p>₱{totalSales}</p>
-                </div>
                 <div className="card">
                     <h2>Top 3 Best-Selling Items</h2>
                     {topItems.length === 0 ? (
                         <p>No data.</p>
                     ) : (
-                        <ol>
-                            {topItems.map((item, index) => (
-                                <li key={index}>
-                                    {item.Food_Name} — {item.quantity} sold
-                                </li>
-                            ))}
-                        </ol>
+                        <table className="top-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Food Name</th>
+                                    <th>Quantity Sold</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {topItems.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.Food_Name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     )}
+                </div>
+                <div className="card">
+                    <h2>Total Sales</h2>
+                    
+                    <table className="category-sales-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Items Sold</th>
+                                <th>Total Sales (₱)</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    
+                <div className="card-header-row">
+                    <h2>Total Sales</h2>
+                    <p className="card-count">1234</p>
+                </div>
+                </div>
+
+                <div className="card">
+                <div className="card-header-row">
+                    <h2>Completed Orders</h2>
+                    <p className="card-count">{completedCount}</p>
+                </div>
+                    <table className="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Table No.</th>
+                                <th>Items(₱)</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div className="card">
+                <div className="card-header-row">
+                    <h2>Pending Orders</h2>
+                    <p className="card-count">{pendingCount}</p>
+                </div>
+                    <table className="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Table No.</th>
+                                <th>Items(₱)</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
             </div>

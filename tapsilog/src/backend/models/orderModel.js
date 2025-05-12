@@ -21,6 +21,10 @@ const orderModel = new mongoose.Schema({
                 required: true,
                 default: 1,
             },
+            Category: {        // Add Category field here
+                type: String,
+                required: false,
+            }
         },
     ],
     Total: {

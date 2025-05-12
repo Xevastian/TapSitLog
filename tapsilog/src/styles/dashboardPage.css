@@ -1,25 +1,59 @@
-.dashboard-container {
-    padding: 2rem;
-    font-family: var(--font-family);
-}
-
 .summary-cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
 .card {
-    border-radius: 8px;
+    border-radius: 1rem;
     padding: 1rem;
-    width: 250px;
+    width: 93%;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card h2 {
     margin-bottom: 0.5rem;
 }
 
-.card ol {
-    padding-left: 1.25rem;
+.top-items-table, .category-sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.top-items-table th,
+.top-items-table td, 
+.category-sales-table th,
+.category-sales-table td {
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.top-items-table th {
+    font-weight: 600;
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+}
+
+.card-header-row h2,
+.card-header-row .card-count {
+    margin: 0;
+}
+
+.card-header-row  .card-count{
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.orders-table {
+    text-align: left;
 }
