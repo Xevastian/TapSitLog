@@ -36,7 +36,7 @@ export default function OrderPage() {
             updatedOrder[existingOrderIndex].quantity += 1;
             setOrder(updatedOrder);
         } else {
-            setOrder([...order, { _id: food._id, Food_Name: food.Food_Name, Food_Price: food.Food_Price, quantity: 1 }]);
+            setOrder([...order, { _id: food._id, Food_Name: food.Food_Name, Food_Price: food.Food_Price, quantity: 1, Category: food.Food_Category }]);
         }
     };
 

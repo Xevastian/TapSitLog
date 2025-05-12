@@ -21,9 +21,9 @@ const orderModel = new mongoose.Schema({
                 required: true,
                 default: 1,
             },
-            Category: {        // Add Category field here
+            Category: {
                 type: String,
-                required: false,
+                required: true,
             }
         },
     ],

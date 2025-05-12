@@ -4,14 +4,14 @@ import Order from "../models/orderModel.js";
 const router = express.Router();
 
 router.post("/addOrder", async (req, res) => {
-    const { Content, Total, TableID, Status, CustomerNumber } = req.body;
+    const { Content, Total, TableID, Status, CustomerNumber} = req.body;
     try {
         const newOrder = new Order({
             Content,
             Total,
             TableID,
             CustomerNumber,
-            Status: Status || "unpaid" 
+            Status: Status || "unpaid",
         });
         await newOrder.save();
         res.status(201).json(newOrder);
@@ -74,6 +74,7 @@ router.delete("/deleteOrder/:OrderID", async (req, res) => {
         res.status(500).json({ message: "Error deleting order", error });
     }
 });
+
 
 router.get("/completed", async (req, res) => {
     try {
