@@ -105,6 +105,7 @@
     text-align: center;
     color: var(--tertiary-3);
     background-color: var(--primary-white);
+    overflow: hidden;
 }
 
 .route-content {

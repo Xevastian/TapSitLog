@@ -5,8 +5,37 @@ import '../../../styles/dashboardPage.css';
 export default function DashboardPage() {
     const [completedCount, setCompletedCount] = useState(0);
     const [pendingCount, setPendingCount] = useState(0);
+    const [recentCompletedOrders, setRecentCompletedOrders] = useState([]);
+    const [recentPendingOrders, setRecentPendingOrders] = useState([]);
+
     const [totalSales, setTotalSales] = useState(0);
     const [topItems, setTopItems] = useState([]);
+    const [categorySales, setCategorySales] = useState([]);
+
+    const calculateCategorySales = (completedOrders) => {
+        const categoryMap = new Map();
+    
+        completedOrders.forEach(order => {
+            order.Content.forEach(item => {
+                const { Category, Food_Price, quantity } = item;
+                const totalSale = Food_Price * quantity;
+    
+                if (categoryMap.has(Category)) {
+                    const existing = categoryMap.get(Category);
+                    existing.Item_Sold += quantity;
+                    existing.Total_Sale += totalSale;
+                } else {
+                    categoryMap.set(Category, {
+                        Category,
+                        Item_Sold: quantity,
+                        Total_Sale: totalSale,
+                    });
+                }
+            });
+        });
+    
+        return Array.from(categoryMap.values());
+    };
     
     const fetchSummary = useCallback(async () => {
     try {
@@ -23,8 +52,12 @@ export default function DashboardPage() {
 
         setCompletedCount(completed.length);
         setPendingCount(pending.length);
+        setRecentCompletedOrders(completed.slice(-3).reverse()); // Most recent 3
+        setRecentPendingOrders(pending.slice(-3).reverse());
         setTotalSales(totalSalesAmount.toFixed(2));
         setTopItems(resTop.data);
+        setCategorySales(calculateCategorySales(completed));
+
     } catch (err) {
         console.error("Error fetching summary:", err);
         alert("Failed to load dashboard summary.");
@@ -39,7 +72,7 @@ export default function DashboardPage() {
     return (
         <main className="route-container">
             <div className="route-header">
-                    <span className="route-date">April 29, 2025</span>
+                    <span className="route-date">May 14, 2025</span>
                     <h1>Dashboard Summary</h1>
             </div>
 
@@ -74,18 +107,30 @@ export default function DashboardPage() {
                     <h2>Total Sales</h2>
                     
                     <table className="category-sales-table">
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Items Sold</th>
-                                <th>Total Sales (₱)</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Items Sold</th>
+                            <th>Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {categorySales.length === 0 ? (
+                            <tr><td colSpan="3">No data available.</td></tr>
+                        ) : (
+                            categorySales.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.Category}</td>
+                                    <td>{item.Item_Sold}</td>
+                                    <td> ₱ {item.Total_Sale.toFixed(2)}</td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>                    
                 <div className="card-header-row">
                     <h2>Total Sales</h2>
-                    <p className="card-count">1234</p>
+                    <p className="card-count">₱ {totalSales}</p>
                 </div>
                 </div>
 
@@ -102,6 +147,20 @@ export default function DashboardPage() {
                                 <th>Items(₱)</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        {recentCompletedOrders.length === 0 ? (
+                            <tr><td colSpan="3">No recent orders.</td></tr>
+                        ) : (
+                            recentCompletedOrders.map((order, index) => (
+                                <tr key={index}>
+                                    <td>...{order._id.slice(-10)}</td>
+                                    <td>{order.TableNo}</td>
+                                    <td>₱ {order.Total.toFixed(2)}</td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+
                     </table>
                 </div>
                 <div className="card">
@@ -117,6 +176,19 @@ export default function DashboardPage() {
                                 <th>Items(₱)</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        {recentPendingOrders.length === 0 ? (
+                            <tr><td colSpan="3">No recent orders.</td></tr>
+                        ) : (
+                            recentPendingOrders.map((order, index) => (
+                                <tr key={index}>
+                                    <td>...{order._id.slice(-10)}</td>
+                                    <td>{order.TableNo}</td>
+                                    <td>₱ {order.Total.toFixed(2)}</td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
                     </table>
                 </div>
             </div>

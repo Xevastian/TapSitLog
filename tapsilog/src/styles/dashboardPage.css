@@ -2,13 +2,13 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 
 .card {
     border-radius: 1rem;
-    padding: 1rem;
-    width: 93%;
+    padding: 1rem 2rem;
+    width: 90%;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -17,24 +17,6 @@
 
 .card h2 {
     margin-bottom: 0.5rem;
-}
-
-.top-items-table, .category-sales-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-}
-
-.top-items-table th,
-.top-items-table td, 
-.category-sales-table th,
-.category-sales-table td {
-    padding: 0.5rem;
-    text-align: left;
-}
-
-.top-items-table th {
-    font-weight: 600;
 }
 
 .card-header-row {
@@ -54,6 +36,83 @@
     font-size: 1.4rem;
 }
 
-.orders-table {
+/* Table Base Styles */
+table {
+    width: 100%;
+    border-collapse: separate;
+    font-size: 0.95rem;
+    border-spacing: 0 0.4rem;
     text-align: left;
+}
+
+th,
+td {
+    padding: 0.5rem;
+}
+
+/* Category Sales Table */
+.category-sales-table {
+    border-spacing: 0;
+}
+.category-sales-table tbody td {
+    background-color: var(--secondary-white2);
+    padding: 0.75rem;
+}
+
+.category-sales-table tbody tr:first-child td:first-child {
+    border-top-left-radius: 12px;
+}
+
+.category-sales-table tbody tr:first-child td:last-child {
+    border-top-right-radius: 12px;
+}
+
+.category-sales-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.category-sales-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+/* Top Items Table */
+.top-items-table {
+    margin-bottom: 2rem;
+}
+
+.top-items-table tbody td:nth-child(1) {
+    font-weight: 700;
+}
+
+.top-items-table tbody td:nth-child(2),
+.top-items-table tbody td:nth-child(3) {
+    background-color: var(--secondary-white2);
+}
+
+.top-items-table tbody td:nth-child(2) {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    padding-left: 1rem;
+}
+
+.top-items-table tbody td:nth-child(3) {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+/* Orders Table */
+.orders-table tbody td {
+    background-color: var(--secondary-white2);
+    padding: 0.55rem;
+}
+
+.orders-table tbody td:nth-child(1) {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    padding-left: 1rem;
+}
+
+.orders-table tbody td:nth-child(3) {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }

@@ -48,7 +48,7 @@ export default function GenerateQrPage() {
 
             {/* HEADER */}
             <div className="route-header">
-                <span className="route-date">April 29, 2025</span>
+                <span className="route-date">May 14, 2025</span>
                 <h1>Generate QR Code</h1>
             </div>
 

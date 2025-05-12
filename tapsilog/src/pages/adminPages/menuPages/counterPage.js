@@ -87,7 +87,7 @@ export default function CounterPage() {
 
                 {/* HEADER */}
                 <div className="route-header">
-                    <span className="route-date">April 29, 2025</span>
+                    <span className="route-date">May 14, 2025</span>
                     <h1>Counter Panel</h1>
                 </div>
 
@@ -100,7 +100,7 @@ export default function CounterPage() {
                         <div className="category-column">
                             <h3>Categories</h3>
                             <div className="category-list">
-                                {["Rice Meal", "Soup", "Snack", "Beverage"].map((cat) => (
+                                {["Rice Meal", "Soup", "Snacks", "Beverage"].map((cat) => (
                                     <button 
                                         key={cat}
                                         className={selectedCategory === cat ? "active" : ""}

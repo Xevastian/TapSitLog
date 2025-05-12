@@ -163,7 +163,7 @@ export default function MenuPage() {
                 <aside className="sidebar">
                     <div className="profile">
                             <i className="fas fa-user-circle"></i> 
-                            <p>{username}</p> {/* Palagay Backend Thanks || Reply: Oks na*/}
+                            <p>{username}</p>
                     </div>
                     <button
                         onClick={() => nav('dashboard')}
@@ -199,7 +199,7 @@ export default function MenuPage() {
                     >
                         <i className="fas fa-solid fa-mug-saucer"></i> Menu
                     </button>
-                    
+
                     <button onClick={handleLogout}>
                         <i className="fas fa-sign-out-alt"></i> Logout
                     </button>
