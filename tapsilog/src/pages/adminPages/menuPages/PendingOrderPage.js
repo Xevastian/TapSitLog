@@ -71,13 +71,13 @@ export default function PendingOrderPage() {
                         className={`status-filter-button ${statusFilter === "paid" ? "active" : ""}`}
                         onClick={() => setStatusFilter("paid")}
                     >
-                        Paid
+                        Pending
                     </button>
                     <button
-                        className={`status-filter-button ${statusFilter === "unpaid" ? "active" : ""}`}
-                        onClick={() => setStatusFilter("unpaid")}
+                        className={`status-filter-button ${statusFilter === "served" ? "active" : ""}`}
+                        onClick={() => setStatusFilter("served")}
                     >
-                        Unpaid
+                        Served
                     </button>
                 </div>
 
@@ -98,7 +98,6 @@ export default function PendingOrderPage() {
                                         value={order.Status}
                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                     >
-                                        <option value="unpaid">Unpaid</option>
                                         <option value="paid">Paid</option>
                                         <option value="served">Served</option>
                                     </select>

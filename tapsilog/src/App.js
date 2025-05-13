@@ -19,7 +19,7 @@ import Receipt from './pages/userPages/paymentPages/onlineOptionsPage/eReceipt.j
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<LandingPage />} />
+      {/* Customer Routes */}
       <Route path='/:id/order' element={<OrderPage/>}/>
       <Route path='/:id/order/:orderID' element={<CartPage/>}/>
       <Route path='/:id/order/:orderID/payment' element={<PayementPage/>}/>
@@ -28,16 +28,15 @@ function App() {
       <Route path='/:id/order/:orderID/payment/rcpt' element={<Receipt/>}/>
       <Route path='/:id/order/:orderID/payment/otc' element={<OTCPayementPage/>}/>
       
-      <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} >
-        
-        <Route index element={<DashboardPage />} /> 
-
-        <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
-        <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
-        <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
-        <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
-        <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
-      </Route>
+      {/* Admin Routes */}
+      <Route path='/' element={<LandingPage />} />
+      <Route path='/menu' element={<PrivateRoute><MenuPage /></PrivateRoute>} > 
+      <Route path='/menu/counter' element={<PrivateRoute><CounterPage /></PrivateRoute>} />
+      <Route path='/menu/pending-orders' element={<PrivateRoute><SaleSummaryPage /></PrivateRoute>} />
+      <Route path='/menu/generate-qr' element={<PrivateRoute><GenerateQrPage /></PrivateRoute>} />
+      <Route path="/menu/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} /> 
+      <Route path='/menu/menu_page' element={<PrivateRoute><Menu /></PrivateRoute>} /> 
+    </Route>
     </Routes>
   );
 }

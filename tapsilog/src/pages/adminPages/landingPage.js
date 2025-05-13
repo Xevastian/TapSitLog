@@ -64,7 +64,7 @@ const Auth = () => {
             localStorage.setItem('token', response.data.token);
 
             if (isLogin) {
-                navigate('/menu');
+                navigate('/menu/dashboard');
             } else {
                 setIsLogin(true);
             }
