@@ -154,7 +154,7 @@ export default function DashboardPage() {
                             recentCompletedOrders.map((order, index) => (
                                 <tr key={index}>
                                     <td>...{order._id.slice(-10)}</td>
-                                    <td>{order.TableNo}</td>
+                                    <td>{order.TableID.Table_Number}</td>
                                     <td>₱ {order.Total.toFixed(2)}</td>
                                 </tr>
                             ))
@@ -183,7 +183,7 @@ export default function DashboardPage() {
                             recentPendingOrders.map((order, index) => (
                                 <tr key={index}>
                                     <td>...{order._id.slice(-10)}</td>
-                                    <td>{order.TableNo}</td>
+                                    <td>{order.TableID.Table_Number}</td>
                                     <td>₱ {order.Total.toFixed(2)}</td>
                                 </tr>
                             ))

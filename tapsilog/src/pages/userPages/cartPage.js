@@ -58,6 +58,7 @@ export default function CartPage() {
 
     return (
         <>
+        <div className="orderPage">
             <nav className="cart-navbar">
                 <Icon icon="mdi:cart-outline" className="cart-icon" />
                 <h1>Orders</h1>
@@ -97,6 +98,7 @@ export default function CartPage() {
             <div className="cart-actions">
                 <button className="btn-back" onClick={() => navigate(-1)}>Redo Order</button>
                 <button className="btn-review" onClick={() => navigate(`/${id}/order/${orderID}/payment`)}>Review Payment</button>
+            </div>
             </div>
         </>
     );

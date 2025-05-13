@@ -62,7 +62,6 @@ export default function MenuPage() {
             }
             const data = await pending.json();
             setPendingOrders(data);
-            console.log("Pending Orders: ",data);
         }
         catch (error) {
             console.error('Error fetching orders:', error);
@@ -80,7 +79,6 @@ export default function MenuPage() {
             }
             const data = await completed.json();
             setCompletedOrders(data);
-            console.log("Completed Orders: ",data);
         }
         catch (error) {
             console.error('Error fetching orders:', error);
@@ -154,7 +152,7 @@ export default function MenuPage() {
 
         return topItems;
     }
-    console.log("Top Selling Items: ",TopSellingItems());
+    
     return (
 
         <>

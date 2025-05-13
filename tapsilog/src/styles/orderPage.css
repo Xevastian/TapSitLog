@@ -2,14 +2,13 @@
 
 .orderPage {
     
-    background-color: var(--primary-white);
+    background-color: var(--secondary-white);
     min-height: 100vh;
     font-family: var(--font-family);
     display: flex;
     flex-direction: column;
     
 }
-
 
 .menu-header {
     font-size: 40px;
@@ -24,7 +23,7 @@
     top: 0; 
     z-index: 10; 
     background-color: var(--primary-white); 
-    padding: 10px 20px; 
+    padding: 0 0 10px 0; 
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -37,12 +36,23 @@
     font-family: var(--font-family);
     font-weight: var(--font-weight-semibold);
 }
+.order-header {
+    background-color: var(--tertiary-4);
+    color: white;
+}
+
+.order-header h1{
+    padding: 0.2rem 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
 
 .category-header {
     font-size: 18px;
     font-weight: var(--font-weight-semibold);
     color: var(--primary-black);
     margin: 10px 0;
+    padding: 0 30px;
 }
 
 .category-list {

@@ -98,7 +98,7 @@ export default function PendingOrderPage() {
                                         value={order.Status}
                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                     >
-                                        <option value="paid">Paid</option>
+                                        <option value="paid">Pending</option>
                                         <option value="served">Served</option>
                                     </select>
                                 </label>

@@ -6,6 +6,7 @@ import '../../styles/orderPage.css';
 import test from './test.png'
 import { ipv4 } from "../../ipv4.js";
 
+
 export default function OrderPage() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -13,24 +14,30 @@ export default function OrderPage() {
     const [order, setOrder] = useState([]);
     const [topMeal, setTopMeal] = useState([]);
 
+
     const categories = [
         {
             name: "RICE MEAL",
             icon: "bxs:bowl-rice",
         },
         {
-            name: "DRINKS",
+            name: "BEVERAGE",
             icon: "ri:drinks-2-fill",
         },
         {
             name: "SNACKS",
             icon: "mdi:food-apple",
         },
+        {
+            name: "SOUPS",
+            icon: "mdi:food-apple",
+        },
     ];
+
 
     const addOrder = (foodID) => {
         const food = menus.find(item => item._id === foodID);
-        const existingOrderIndex = order.findIndex(item => item._id === foodID); 
+        const existingOrderIndex = order.findIndex(item => item._id === foodID);
         if (existingOrderIndex !== -1) {
             const updatedOrder = [...order];
             updatedOrder[existingOrderIndex].quantity += 1;
@@ -40,19 +47,21 @@ export default function OrderPage() {
         }
     };
 
+
     const calculateTotal = () => {
         return order.reduce((total, item) => total + item.Food_Price * item.quantity, 0).toFixed(2);
     };
+
 
     const checkCart = async () => {
         if(order.length === 0){
             return;
         }
         try {
-            
-            const response = await axios.post(`http://${ipv4}:5000/order/addOrder`, { 
-                Content: order, 
-                Total: calculateTotal(), 
+           
+            const response = await axios.post(`http://${ipv4}:5000/order/addOrder`, {
+                Content: order,
+                Total: calculateTotal(),
                 Status: 'unpaid',
                 TableID: id,
             });
@@ -67,21 +76,26 @@ export default function OrderPage() {
     };
 
 
+
+
     const fetchMenu = async () => {
         try {
             const response = await axios.get(`http://${ipv4}:5000/menu/getMenu`);
 
+
             setMenu(response.data);
-            
+           
         } catch (e) {
             console.error("Error fetching menu:", e);
             alert("Failed to fetch menu.");
         }
     };
 
+
     useEffect(() => {
         fetchMenu();
     }, []);
+
 
     const fetchTopMeal = async () => {
         try {
@@ -108,27 +122,26 @@ export default function OrderPage() {
             });
             const sortedTopMeals = Array.from(foodMap.values())
                 .sort((a, b) => b.totalQuantity - a.totalQuantity)
-                .slice(0, 5); 
+                .slice(0, 5);
             setTopMeal(sortedTopMeals);
-    
+   
         } catch (e) {
             console.error("Error fetching top meal:", e);
             alert("Failed to fetch top meal.");
         }
     };
-    
+   
     useEffect(() => {
         fetchTopMeal();
     }
     , []);
-    
+   
     return (
         <>
             <div className="orderPage">
-                
                 <div className="menu-category">
                     <div className="order-header">
-                        <h1 className="menu-header">Menu</h1>
+                        <h1 className="menu-header">TapSitLog</h1>
                     </div>
                     <h3 className="category-header">Category</h3>
                     <div className="category-list">
@@ -139,7 +152,7 @@ export default function OrderPage() {
                                 onClick={() => {
                                     const section = document.getElementById(category.name.replace(" ", "-").toLowerCase());
                                     if (section) {
-                                        const yOffset = -275; 
+                                        const yOffset = -275;
                                         const yPosition = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
                                         window.scrollTo({ top: yPosition, behavior: "smooth" });
                                     }
@@ -163,12 +176,13 @@ export default function OrderPage() {
                         <h3 className="menu-section-header">Best Seller</h3>
                         <div className="menu-items">
                             {menus
-                                .filter(menu => 
+                                .filter(menu =>
                                     topMeal.some(top => top._id === menu._id) // Filter to only show items that are in topMeal
                                 )
                                 .map((menu, index) => {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;
+
 
                                     return (
                                         <div key={index} className="menu-item">
@@ -176,10 +190,10 @@ export default function OrderPage() {
                                                 <Icon icon="mdi:tag-heart" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Best Sellers</span>
                                             </div>
-                                            <img 
-                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                                alt={menu.Food_Name} 
-                                                className="menu-item-image" 
+                                            <img
+                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                                alt={menu.Food_Name}
+                                                className="menu-item-image"
                                                 onError={(e) => e.currentTarget.src = test}
                                             />
                                             <div className="menu-desc">
@@ -226,11 +240,12 @@ export default function OrderPage() {
                         <h3 className="menu-section-header">Savers</h3>
                         <div className="menu-items">
                             {menus
-                                .sort((a, b) => a.Food_Price - b.Food_Price) 
-                                .slice(0, 2) 
+                                .sort((a, b) => a.Food_Price - b.Food_Price)
+                                .slice(0, 2)
                                 .map((menu, index) => {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;
+
 
                                     return (
                                         <div key={index} className="menu-item">
@@ -238,10 +253,10 @@ export default function OrderPage() {
                                                 <Icon icon="mdi:tag-heart" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Savers</span>
                                             </div>
-                                            <img 
-                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                                alt={menu.Food_Name} 
-                                                className="menu-item-image" 
+                                            <img
+                                                src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                                alt={menu.Food_Name}
+                                                className="menu-item-image"
                                                 onError={(e) => e.currentTarget.src = test}
                                             />
                                             <div className="menu-desc">
@@ -293,16 +308,17 @@ export default function OrderPage() {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;
 
+
                                     return (
                                         <div key={index} className="menu-item">
                                             <div className="menu-item-header">
                                                 <Icon icon="bxs:bowl-rice" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Rice Meal</span>
                                             </div>
-                                            <img 
-                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                            alt={menu.Food_Name} 
-                                            className="menu-item-image" 
+                                            <img
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                            alt={menu.Food_Name}
+                                            className="menu-item-image"
                                             onError={(e) => e.currentTarget.src = test}
                                             />
                                             <div className="menu-desc">
@@ -345,27 +361,29 @@ export default function OrderPage() {
                         </div>
                     </div>
 
-                    {/* Drinks Section */}
-                    <div id="drinks" className="menu-section">
-                        <h3 className="menu-section-header">Drinks</h3>
+
+                    {/* Soups Section */}
+                    <div id="soups" className="menu-section">
+                        <h3 className="menu-section-header">Soups</h3>
                         <div className="menu-items">
                             {menus
-                                .filter(menu => menu.Food_Category === "Drinks")
+                                .filter(menu => menu.Food_Category === "Soup")
                                 .map((menu, index) => {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;
+
 
                                     return (
                                         <div key={index} className="menu-item">
                                             <div className="menu-item-header">
                                                 <Icon icon="ri:drinks-2-fill" className="menu-item-icon" />
-                                                <span className="menu-item-badge">Drinks</span>
+                                                <span className="menu-item-badge">Beverage</span>
                                             </div>
-                                            <img 
-                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                            
-                                            alt={menu.Food_Name} 
-                                            className="menu-item-image" 
+                                            <img
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                           
+                                            alt={menu.Food_Name}
+                                            className="menu-item-image"
                                             onError={(e) => e.currentTarget.src = test}
                                             />
                                             <div className="menu-desc">
@@ -407,6 +425,74 @@ export default function OrderPage() {
                                 })}
                         </div>
                     </div>
+
+
+
+
+                    {/* Beverage Section */}
+                    <div id="beverage" className="menu-section">
+                        <h3 className="menu-section-header">Beverage</h3>
+                        <div className="menu-items">
+                            {menus
+                                .filter(menu => menu.Food_Category === "Beverage")
+                                .map((menu, index) => {
+                                    const orderItem = order.find(item => item._id === menu._id);
+                                    const quantity = orderItem ? orderItem.quantity : 0;
+
+
+                                    return (
+                                        <div key={index} className="menu-item">
+                                            <div className="menu-item-header">
+                                                <Icon icon="ri:drinks-2-fill" className="menu-item-icon" />
+                                                <span className="menu-item-badge">Beverage</span>
+                                            </div>
+                                            <img
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                           
+                                            alt={menu.Food_Name}
+                                            className="menu-item-image"
+                                            onError={(e) => e.currentTarget.src = test}
+                                            />
+                                            <div className="menu-desc">
+                                                <h4 className="menu-item-title">{menu.Food_Name}</h4>
+                                                <div className="menu-item-content">
+                                                    <p className="menu-item-price">₱ {menu.Food_Price.toFixed(2)}</p>
+                                                    <div className="menu-item-footer">
+                                                        {quantity > 0 && (
+                                                            <button
+                                                                className="menu-item-minus"
+                                                                onClick={() => {
+                                                                    const existingOrderIndex = order.findIndex(item => item._id === menu._id);
+                                                                    if (existingOrderIndex !== -1) {
+                                                                        const updatedOrder = [...order];
+                                                                        if (updatedOrder[existingOrderIndex].quantity > 1) {
+                                                                            updatedOrder[existingOrderIndex].quantity -= 1;
+                                                                        } else {
+                                                                            updatedOrder.splice(existingOrderIndex, 1);
+                                                                        }
+                                                                        setOrder(updatedOrder);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {quantity > 0 && <span className="menu-item-quantity">{quantity}</span>}
+                                                        <button
+                                                            className="menu-item-add"
+                                                            onClick={() => addOrder(menu._id)}
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    </div>
+
 
                     {/* Snacks Section */}
                     <div id="snacks" className="menu-section">
@@ -418,16 +504,17 @@ export default function OrderPage() {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;
 
+
                                     return (
                                         <div key={index} className="menu-item">
                                             <div className="menu-item-header">
                                                 <Icon icon="mdi:food-apple" className="menu-item-icon" />
                                                 <span className="menu-item-badge">Snacks</span>
                                             </div>
-                                            <img 
-                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`} 
-                                            alt={menu.Food_Name} 
-                                            className="menu-item-image" 
+                                            <img
+                                            src={`http://${ipv4}:5000/uploads/${menu.Food_Image?.replace(/\\/g, "/")}`}
+                                            alt={menu.Food_Name}
+                                            className="menu-item-image"
                                             onError={(e) => e.currentTarget.src = test}
                                             />
                                             <div className="menu-desc">
@@ -477,3 +564,4 @@ export default function OrderPage() {
         </>
     );
 }
+
