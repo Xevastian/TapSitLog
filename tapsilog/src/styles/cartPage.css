@@ -56,6 +56,10 @@
     margin: 3px 0;
 }
 
+.service-desc h2{
+  font-size: 1.4rem;
+}
+
 .service-icon{
     height: clamp(40px, 50px, 60px);
     width: clamp(40px, 60px, 80px);

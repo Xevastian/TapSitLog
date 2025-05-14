@@ -6,16 +6,37 @@ import '../../styles/cartPage.css';
 import test from './test.png';
 import { ipv4 } from "../../ipv4.js";
 
+
 export default function CartPage() {
     const { id, orderID } = useParams();
     const navigate = useNavigate();
     const [order, setOrder] = useState([]);
+    const [imageMap, setImageMap] = useState({});
 
     useEffect(() => {
         const fetchOrder = async () => {
             try {
                 const response = await axios.get(`http://${ipv4}:5000/order/getOrder/${orderID}`);
-                setOrder(response.data.Content);
+                const items = response.data.Content;
+
+                setOrder(items);
+
+                const imagePromises = items.map(async (item) => {
+                    try {
+                        const res = await axios.get(`http://${ipv4}:5000/menu/getMenu/${item._id}`);
+                        return { id: item._id, image: res.data.Food_Image };
+                    } catch (error) {
+                        return { id: item._id, image: null };
+                    }
+                });
+
+                const images = await Promise.all(imagePromises);
+                const map = {};
+                images.forEach(({ id, image }) => {
+                    map[id] = image;
+                });
+                setImageMap(map);
+
             } catch (e) {
                 console.error("Error fetching menu:", e);
                 alert("Failed to fetch menu.");
@@ -31,12 +52,14 @@ export default function CartPage() {
                     ? { ...item, quantity: item.quantity + delta }
                     : item
             )
-            .filter(item => item.quantity > 0); 
+            .filter(item => item.quantity > 0);
+
 
         const updatedTotal = updatedOrder.reduce(
             (total, item) => total + item.Food_Price * item.quantity,
             0
         );
+
 
         try {
             await axios.put(`http://${ipv4}:5000/order/updateOrder/${orderID}`, {
@@ -45,6 +68,7 @@ export default function CartPage() {
                 Status: "Pending"
             });
 
+
             setOrder(updatedOrder);
         } catch (error) {
             console.error("Failed to update order", error);
@@ -52,9 +76,11 @@ export default function CartPage() {
         }
     };
 
+
     const calculateTotal = () => {
         return order.reduce((total, item) => total + item.Food_Price * item.quantity, 0).toFixed(2);
     };
+
 
     return (
         <>
@@ -64,6 +90,7 @@ export default function CartPage() {
                 <h1>Orders</h1>
             </nav>
 
+
             <div className="service-time">
                 <Icon icon="game-icons:camp-cooking-pot" className="service-icon" />
                 <div className="service-desc">
@@ -72,16 +99,21 @@ export default function CartPage() {
                 </div>
             </div>
 
+
             <div className="cart-items">
                 {order.map((item) => (
                     <div className="cart-item" key={item._id}>
-                        <img
-                        src={`http://${ipv4}:5000/uploads/${item.Food_Image?.replace(/\\/g, "/")}`}
-                        
-                        alt={item.Food_Name}
-                        className="cart-item-image"
-                        onError={(e) => e.currentTarget.src = test}
+                       <img
+                            src={
+                                imageMap[item._id]
+                                    ? `http://${ipv4}:5000/uploads/${imageMap[item._id].replace(/\\/g, "/")}`
+                                    : test
+                            }
+                            alt={item.Food_Name}
+                            className="cart-item-image"
+                            onError={(e) => e.currentTarget.src = test}
                         />
+                       
                         <div className="cart-item-details">
                             <div className="quantity-control">
                                 <button onClick={() => updateQuantity(item._id, -1)}>−</button>
@@ -95,11 +127,13 @@ export default function CartPage() {
                 ))}
             </div>
 
+
             <hr className="divider" />
             <div className="cart-total">
                 <h2>Total</h2>
                 <h2>₱ {calculateTotal()}</h2>
             </div>
+
 
             <div className="cart-actions">
                 <button className="btn-back" onClick={() => navigate(-1)}>Redo Order</button>
@@ -109,3 +143,8 @@ export default function CartPage() {
         </>
     );
 }
+
+
+
+
+
