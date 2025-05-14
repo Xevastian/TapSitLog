@@ -30,7 +30,7 @@ export default function OrderPage() {
         },
         {
             name: "SOUPS",
-            icon: "mdi:food-apple",
+            icon: "tabler:soup-filled",
         },
     ];
 
@@ -241,7 +241,7 @@ export default function OrderPage() {
                         <div className="menu-items">
                             {menus
                                 .sort((a, b) => a.Food_Price - b.Food_Price)
-                                .slice(0, 2)
+                                .slice(0, 3)
                                 .map((menu, index) => {
                                     const orderItem = order.find(item => item._id === menu._id);
                                     const quantity = orderItem ? orderItem.quantity : 0;

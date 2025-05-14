@@ -29,7 +29,8 @@ export default function PayementPage() {
 
 
     return (
-        <div style={{background:"#F9F7F7", position: "absolute", width: "100%", height: "100%"}}>
+        <div className="paymentPage">
+        <div style={{background:"#DBE2EF", position: "absolute", width: "100%", height: "100%"}}>
             <nav className="payment-navbar">
                 <Icon icon="solar:dollar-outline" className="payment-icon"/>
                 <h1>Mode of Payment</h1>
@@ -44,6 +45,7 @@ export default function PayementPage() {
                     ))
                 }
             </div>
+        </div>
         </div>
     )
 }

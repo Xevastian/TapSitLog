@@ -1,5 +1,8 @@
 @import 'vars.css';
 
+.paymentPage {
+    background-color: var(--secondary-white);
+}
 .payment-navbar{
     background-color: var(--tertiary-4);
     display: flex;

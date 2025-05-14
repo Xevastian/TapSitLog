@@ -25,6 +25,13 @@
     margin: 0 clamp(10px, 15px, 25px);
 }
 
+.cart.menu-item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-bottom: 2px solid var(--tertiary-3);
+}
+
 .service-time{
     margin: 10px;
     display: flex;

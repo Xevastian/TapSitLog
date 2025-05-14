@@ -75,7 +75,13 @@ export default function CartPage() {
             <div className="cart-items">
                 {order.map((item) => (
                     <div className="cart-item" key={item._id}>
-                        <img src={item.Food_Image || test} alt={item.Food_Name} className="cart-item-image" />
+                        <img
+                        src={`http://${ipv4}:5000/uploads/${item.Food_Image?.replace(/\\/g, "/")}`}
+                        
+                        alt={item.Food_Name}
+                        className="cart-item-image"
+                        onError={(e) => e.currentTarget.src = test}
+                        />
                         <div className="cart-item-details">
                             <div className="quantity-control">
                                 <button onClick={() => updateQuantity(item._id, -1)}>−</button>
